@@ -172,7 +172,7 @@
   - `[ERROR] 음료만 주문 시, 주문할 수 없습니다.`
 
 ### 4-5. 기타옵션
-- Date
+- ✅ Date
   - year : 2023
   - month : 12
   - fistDay : 1
