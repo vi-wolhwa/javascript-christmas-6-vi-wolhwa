@@ -39,5 +39,4 @@ const ORDER_FORM = (day = null, menus = []) => {
   }
 };
 
-
 export { ORDER_FORM };
