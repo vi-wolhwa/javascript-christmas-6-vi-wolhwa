@@ -54,7 +54,7 @@ const EVENT_DATA = deepFreeze([
   {
     name: '증정 이벤트',
     type: type.giveaway,
-    condition: (totalOrderAmount) => totalOrderAmount >= 120000,
+    condition: (totalPrice) => totalPrice >= 120000,
     benefits: () => ['샴페인'],
     description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
   }
