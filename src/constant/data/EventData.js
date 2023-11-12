@@ -17,7 +17,7 @@
  */
 
 import { OPTIONS } from "../Options.js";
-import { EVENT_FORM } from "../EventForm.js";
+import { EVENT_FORM } from "../form/EventForm.js";
 import { deepFreeze } from "../../util/DeepFreeze.js";
 
 const type = OPTIONS.event.type;
