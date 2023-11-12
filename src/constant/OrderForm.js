@@ -5,6 +5,7 @@ const category = OPTIONS.menu.category;
 /**
  * day : 예약 일자
  * menus : 주문 메뉴 [{name: menu1, count: 2}, ...]
+ * dayOfWeek : 예약 요일
  * count: 메뉴 카테고리별 주문 수량
  * total_price : 할인 전 가격
  * active_events : 적용된 이벤트
@@ -20,6 +21,7 @@ const ORDER_FORM = (day = null, menus = []) => {
     menus: menus,
 
     // 주문 접수 후 할당되는 데이터
+    dayOfWeek: null,
     count: {
       [category.appetizer]: null,
       [category.main]: null,
