@@ -21,9 +21,9 @@ const OPTIONS = deepFreeze({
   date: {
     year: 2023,
     month: 12,
-    firstDate: 1,
-    lastDate: 31,
-    daysOfWeek: {
+    first_date: 1,
+    last_date: 31,
+    days_of_week: {
       0: 'Sunday',
       1: 'Monday',
       2: 'Tuesday',
