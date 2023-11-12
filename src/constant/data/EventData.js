@@ -16,9 +16,9 @@
  * 코드만 보고 이벤트가 어떤 내용인지 알기 어렵기 때문에 추가하였다.
  */
 
-import { OPTIONS } from "./Options.js";
-import { EVENT_FORM } from "./EventForm.js";
-import { deepFreeze } from "../util/DeepFreeze.js";
+import { OPTIONS } from "../Options.js";
+import { EVENT_FORM } from "../EventForm.js";
+import { deepFreeze } from "../../util/DeepFreeze.js";
 
 const type = OPTIONS.event.type;
 const dow = OPTIONS.date.days_of_week;

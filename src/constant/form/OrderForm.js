@@ -1,4 +1,4 @@
-import { OPTIONS } from './Options.js'
+import { OPTIONS } from '../Options.js'
 
 const category = OPTIONS.menu.category;
 

@@ -1,5 +1,5 @@
-import { OPTIONS } from "./Options.js";
-import { deepFreeze } from "../util/DeepFreeze.js";
+import { OPTIONS } from "../Options.js";
+import { deepFreeze } from "../../util/DeepFreeze.js";
 
 const category = OPTIONS.menu.category;
 
