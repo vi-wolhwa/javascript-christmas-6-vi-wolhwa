@@ -1,3 +1,8 @@
+/**
+ * [date.days_of_week]
+ * 개발 중 사용할 가능성이 있는 Date 객체의 정의에 따랐다.
+ */
+
 import { deepFreeze } from "../util/DeepFreeze.js";
 
 const OPTIONS = deepFreeze({
