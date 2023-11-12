@@ -23,9 +23,6 @@ const starDay = [3, 10, 17, 24, 25, 31];
 const weekday = Object.values(dow).slice(0, 5);
 const weekend = Object.values(dow).slice(5, 7);
 
-console.log(weekday);
-console.log(weekend);
-
 const EVENT_DATA = deepFreeze([
   {
     name: '크리스마스 디데이 할인',
