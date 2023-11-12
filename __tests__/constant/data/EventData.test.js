@@ -1,5 +1,5 @@
 import { EVENT_DATA } from "../../../src/constant/data/EventData.js";
-import { ORDER_FORM } from "../../../src/constant/form/OrderForm";
+import { ORDER_FORM } from "../../../src/constant/form/OrderForm.js";
 import { MENU_DATA } from "../../../src/constant/data/MenuData.js";
 
 describe("EVENT_DATA 객체 테스트", () => {
