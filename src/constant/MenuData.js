@@ -1,11 +1,7 @@
+import { OPTIONS } from "./Options.js";
 import { deepFreeze } from "../util/DeepFreeze.js";
 
-const category = deepFreeze({
-  appetizer: '애피타이저',
-  main: '메인',
-  dessert: '디저트',
-  beverage: '음료',
-});
+const category = OPTIONS.menu.category;
 
 const MENU_DATA = deepFreeze({
 
