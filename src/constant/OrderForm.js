@@ -21,7 +21,7 @@ const ORDER_FORM = (day = null, menus = []) => {
     menus: menus,
 
     // 주문 접수 후 할당되는 데이터
-    dayOfWeek: null,
+    day_of_week: null,
     count: {
       [category.appetizer]: null,
       [category.main]: null,
