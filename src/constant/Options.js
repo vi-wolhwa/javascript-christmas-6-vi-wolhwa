@@ -3,9 +3,9 @@
  * 개발 중 사용할 가능성이 있는 Date 객체의 정의에 따랐다.
  */
 
-import { deepFreeze } from "../util/DeepFreeze.js";
+import DeepFreeze from "../util/DeepFreeze.js";
 
-const OPTIONS = deepFreeze({
+const OPTIONS = DeepFreeze({
   menu: {
     category: {
       appetizer: '애피타이저',
@@ -39,4 +39,4 @@ const OPTIONS = deepFreeze({
   }
 });
 
-export { OPTIONS };
+export default OPTIONS;
