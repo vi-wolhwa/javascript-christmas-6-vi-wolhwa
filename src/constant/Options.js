@@ -20,7 +20,6 @@ const OPTIONS = deepFreeze({
       discount: '할인',
       giveaway: '증정'
     },
-
   },
 
   date: {
