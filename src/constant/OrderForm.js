@@ -13,27 +13,29 @@ const category = OPTIONS.menu.category;
  * total_benefits : 총 혜택 금액
  * discount_price : 할인 후 가격
  */
-const ORDER_FORM = Object.freeze({
+const ORDER_FORM = (day = null, menus = []) => {
+  return {
+    // 사용자 입력 데이터
+    day: day,
+    menus: menus,
 
-  // 사용자 입력 데이터
-  day: null,
-  menus: [],
+    // 주문 접수 후 할당되는 데이터
+    count: {
+      [category.appetizer]: null,
+      [category.main]: null,
+      [category.dessert]: null,
+      [category.beverage]: null
+    },
+    total_price: null,
 
-  // 주문 접수 후 할당되는 데이터
-  count: {
-    [category.appetizer]: null,
-    [category.main]: null,
-    [category.dessert]: null,
-    [category.beverage]: null
-  },
-  total_price: null,
+    // 이벤트 적용 후 할당되는 데이터
+    active_events: [],
+    giveaways: [],
+    total_discount: null,
+    total_benefits: null,
+    discount_price: null,
+  }
+};
 
-  // 이벤트 적용 후 할당되는 데이터
-  active_events: [],
-  giveaways: [],
-  total_discount: null,
-  total_benefits: null,
-  discount_price: null,
-});
 
 export { ORDER_FORM };
