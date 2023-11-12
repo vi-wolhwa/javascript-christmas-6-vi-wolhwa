@@ -1,4 +1,9 @@
 /**
+ * [orderFrom]
+ * OrderFrom.js와 의존성을 제거하고자 하였으나, 코드가 매우 복잡해졌다.
+ * 따라서 OrderForm을 직접 참조하여 코드를 간결하게 유지하였다.
+ * 그러나 constant 데이터가 비즈니스 로직을 수행한다는 문제가 있다.
+ * 
  * [starDay]
  * '일요일 + 크리스마스'라고 그룹화 할 수 있으나, 이에 대해 분명히 정의하고 있지 않다.
  * 따라서 다른 날도 starDay가 될 수 있다고 보고, 날짜만으로 초기화하였다.
@@ -16,6 +21,7 @@ import { deepFreeze } from "../util/DeepFreeze.js";
 
 const type = OPTIONS.event.type;
 const dow = OPTIONS.date.days_of_week;
+const category = OPTIONS.menu.category;
 
 const christmas = 25;
 const starDay = [3, 10, 17, 24, 25, 31];
@@ -26,35 +32,35 @@ const EVENT_DATA = deepFreeze([
   {
     name: '크리스마스 디데이 할인',
     type: type.discount,
-    condition: (day) => day <= christmas,
-    benefits: (day) => 1000 + (100 * (day - 1)),
+    condition: (orderFrom) => orderFrom.day <= christmas,
+    benefits: (orderFrom) => 1000 + (100 * (day - 1)),
     description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
   },
   {
     name: '평일 할인',
     type: type.discount,
-    condition: (dayOfWeek) => weekday.includes(dayOfWeek),
-    benefits: (dessertCount) => 2023 * dessertCount,
+    condition: (orderFrom) => weekday.includes(orderFrom.day_of_week),
+    benefits: (orderFrom) => 2023 * orderFrom.count[category.dessert],
     description: '평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인'
   },
   {
     name: '주말 할인',
     type: type.discount,
-    condition: (dayOfWeek) => weekend.includes(dayOfWeek),
-    benefits: (mainDishCount) => 2023 * mainDishCount,
+    condition: (orderFrom) => weekend.includes(orderFrom.day_of_week),
+    benefits: (orderFrom) => 2023 * orderFrom.count[category.main],
     description: '주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인'
   },
   {
     name: '특별 할인',
     type: type.discount,
-    condition: (day) => starDay.includes(day),
+    condition: (orderFrom) => starDay.includes(orderFrom.day),
     benefits: () => 1000,
     description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'
   },
   {
     name: '증정 이벤트',
     type: type.giveaway,
-    condition: (totalPrice) => totalPrice >= 120000,
+    condition: (orderFrom) => orderFrom.total_price >= 120000,
     benefits: () => ['샴페인'],
     description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
   }
