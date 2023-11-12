@@ -12,7 +12,6 @@
  */
 
 import { OPTIONS } from "./Options.js";
-import { MENU_DATA } from "./MenuData.js";
 import { deepFreeze } from "../util/DeepFreeze.js";
 
 const type = OPTIONS.event.type;
@@ -56,7 +55,7 @@ const EVENT_DATA = deepFreeze([
     name: '증정 이벤트',
     type: type.giveaway,
     condition: (totalOrderAmount) => totalOrderAmount >= 120000,
-    benefits: () => [MENU_DATA['샴페인']],
+    benefits: () => ['샴페인'],
     description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
   }
 ]);

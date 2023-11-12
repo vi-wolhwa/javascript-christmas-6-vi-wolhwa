@@ -65,6 +65,8 @@ describe("EVENT_DATA 객체 테스트", () => {
     expect(giveawayEvent.condition(119999)).toBeFalsy();
 
     // 증정 메뉴 확인
-    expect(giveawayEvent.benefits()).toEqual([MENU_DATA['샴페인']]);
+    giveawayEvent.benefits().forEach((giveaway) => {
+      expect(Object.keys(MENU_DATA)).toContain(giveaway);
+    });
   });
 });
