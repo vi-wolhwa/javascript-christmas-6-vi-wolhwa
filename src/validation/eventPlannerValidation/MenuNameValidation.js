@@ -1,4 +1,4 @@
-import ERROR_MESSAGES from '../../constant/strings/ErrorMessages.js';
+import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
 import MENU_DATA from '../../constant/data/MenuData.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 

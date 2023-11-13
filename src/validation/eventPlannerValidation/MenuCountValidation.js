@@ -1,5 +1,5 @@
-import ERROR_MESSAGES from '../../constant/strings/ErrorMessages.js';
-import SIGNS from '../../constant/strings/Signs.js';
+import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
+import SIGNS from '../../constant/string/Signs.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 
 const ERROR = ERROR_MESSAGES;

@@ -1,4 +1,4 @@
-import GENERAL_MESSAGES from '../constant/strings/GeneralMessages.js';
+import GENERAL_MESSAGES from '../constant/string/GeneralMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
 const MSG = GENERAL_MESSAGES;

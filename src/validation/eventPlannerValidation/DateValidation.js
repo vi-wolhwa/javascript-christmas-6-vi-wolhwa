@@ -5,7 +5,7 @@
  * (MenuCountValidation.js, MenuNameValidation.js 동일)
  */
 
-import ERROR_MESSAGES from '../../constant/strings/ErrorMessages.js';
+import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
 import OPTIONS from './../../constant/Options.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 
