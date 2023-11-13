@@ -6,8 +6,15 @@ const ERROR = ERROR_MESSAGES;
 
 const MenuCountValidation = DeepFreeze({
 	validate(counts) {
+		this.checkIsNotEmpty(counts);
 		this.checkIsInteger(counts);
 		this.checkIsPositive(counts);
+	},
+
+	checkIsNotEmpty(counts) {
+		if (counts.length === SIGNS.zero) {
+			throw new Error(ERROR.invalid_order);
+		}
 	},
 
 	checkIsInteger(counts) {
