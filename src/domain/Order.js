@@ -33,16 +33,18 @@ class Order {
 	}
 
 	/**
-	 * 입력으로 받은 주문에 대한 총 주문금액을 계산한다.
-	 * @param {Array<object>} order - 주문 정보 배열 [{name: 메뉴명, count: 개수}, ...]
-	 * @returns {number} 총 주문금액
-	 * @throws {Error} 주문 메뉴가 MENU_DATA에 없는 경우 예외 발생
+	 * 방문 날짜에 해당하는 요일을 계산하고, 주문서에 작성한다.
+	 * @param {number} date - 방문 날짜
 	 */
 	#calculateDayOfWeek(date) {
 		const dayOfWeek = GetDayOfWeek(DATE.year, DATE.month, date);
 		this.writeOrderSheet(KEY.day_of_week, dayOfWeek);
 	}
 
+	/**
+	 * 주문에 대한 총 주문금액을 계산하고, 주문서에 작성한다.
+	 * @param {Array<object>} order - 주문 정보 배열 [{name: 메뉴명, count: 개수}, ...]
+	 */
 	#calculateTotalPrice(order) {
 		const totalPrice = order.reduce((totalPrice, menu) => {
 			return totalPrice + MENU_DATA[menu.name].price * menu.count;
