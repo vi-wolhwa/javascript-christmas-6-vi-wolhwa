@@ -15,11 +15,11 @@ const EventPlannerValidator = DeepFreeze({
 
 	/**
 	 * 주문(UserInput)에 대하여 유효성검사를 수행한다.
-	 * @param {Array<object>} orders 주문
+	 * @param {Array<object>} order 주문
 	 */
-	validateOrders(orders) {
-		MenuNameValidation.validate(orders.map((order) => order.name));
-		MenuCountValidation.validate(orders.map((order) => order.count));
+	validateOrder(order) {
+		MenuNameValidation.validate(order.map((menu) => menu.name));
+		MenuCountValidation.validate(order.map((menu) => menu.count));
 	}
 });
 

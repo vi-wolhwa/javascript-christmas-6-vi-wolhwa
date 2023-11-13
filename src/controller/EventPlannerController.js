@@ -2,13 +2,13 @@ import Order from '../domain/Order.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
-import SIGNS from '../constant/strings/Signs.js';
+import SIGNS from '../constant/string/Signs.js';
 
 const Validator = EventPlannerValidator;
 
 class EventPlannerController {
 	/** @type {Order} */
-	#order;
+	#order = new Order();
 
 	// 이벤트 플래너 프로그램을 실행한다.
 	async run() {
@@ -26,8 +26,7 @@ class EventPlannerController {
 	// 사용자입력에 대한 처리를 담당한다.
 	async #handleUserInput() {
 		const date = await this.#handleDateInput();
-		const orders = await this.#handleOrdersInput();
-		this.#order = new Order(date, orders);
+		const order = await this.#handleOrderInput();
 	}
 
 	/**
@@ -39,10 +38,10 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 주문메뉴(Orders)에 대한 처리를 담당한다.
+	 * 주문메뉴(Order)에 대한 처리를 담당한다.
 	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
 	 */
-	async #handleOrdersInput() {
+	async #handleOrderInput() {
 		return this.#preprocessOrder(InputView.readOrder());
 	}
 
@@ -58,22 +57,22 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 주문메뉴(Orders)에 대한 전처리를 수행한다.
-	 * @param {string} rawOrders 주문(UserInput)
+	 * 주문메뉴(Order)에 대한 전처리를 수행한다.
+	 * @param {string} rawOrder 주문(UserInput)
 	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
 	 */
-	#preprocessOrder(rawOrders) {
-		const newOrders = rawOrders
+	#preprocessOrder(rawOrder) {
+		const newOrder = rawOrder
 			.split(SIGNS.comma)
-			.map((item) => item.trim())
-			.filter((item) => item !== SIGNS.empty)
-			.map((item) => {
-				const [name, count] = item.split(SIGNS.hyphen);
+			.map((menu) => menu.trim())
+			.filter((menu) => menu !== SIGNS.empty)
+			.map((menu) => {
+				const [name, count] = menu.split(SIGNS.hyphen);
 				name.replace(SIGNS.space, SIGNS.empty);
 				return { name: name, count: parseInt(count, 10) };
 			});
-		Validator.validateOrder(newOrders);
-		return newOrders;
+		Validator.validateOrder(newOrder);
+		return newOrder;
 	}
 
 	#displayResultHeader() {}
