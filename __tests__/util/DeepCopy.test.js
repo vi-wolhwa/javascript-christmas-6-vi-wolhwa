@@ -1,6 +1,6 @@
 import DeepCopy from '../../src/util/DeepCopy';
 
-describe('DeepCopy 함수 테스트', () => {
+describe('DeepCopy 모듈 테스트', () => {
 	test('원시 타입의 값이 들어있는 경우, 동일한 값 반환', () => {
 		const original = 42;
 		const copied = DeepCopy(original);
