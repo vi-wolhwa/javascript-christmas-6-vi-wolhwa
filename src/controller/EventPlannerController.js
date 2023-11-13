@@ -1,6 +1,7 @@
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
+import SIGNS from '../constant/strings/Signs.js';
 
 const Validator = EventPlannerValidator;
 
@@ -20,7 +21,7 @@ class EventPlannerController {
 
 	async #handleUserInput() {
 		await this.#handleDateInput();
-		await this.#handleOrderInput();
+		await this.#handleOrdersInput();
 	}
 
 	#displayResultHeader() {}
@@ -38,17 +39,33 @@ class EventPlannerController {
 	async #handleDateInput() {
 		const rawDate = await InputView.readDate();
 		const date = this.#preprocessDate(rawDate);
-		//TODO: date 저장
+		//TODO: date 저장, 에러 발생 시 재입력
 	}
 
-	async #handleOrderInput() {
-		const order = await InputView.readOrder();
+	async #handleOrdersInput() {
+		const rawOrders = await InputView.readOrder();
+		const orders = this.#preprocessOrder(rawOrders);
+		//TODO: order 저장, 에러 발생 시 재입력
 	}
 
 	#preprocessDate(rawDate) {
 		const newDate = rawDate.trim();
 		Validator.validateDate(rawDate);
-		return parseInt(newDate);
+		return parseInt(newDate, 10);
+	}
+
+	#preprocessOrder(rawOrders) {
+		const newOrders = rawOrders
+			.split(SIGNS.comma)
+			.map((order) => order.trim())
+			.filter((order) => order !== SIGNS.empty)
+			.map((order) => {
+				const [name, count] = order.split(SIGNS.hyphen);
+				name.replace(SIGNS.space, SIGNS.empty);
+				return { name: name, count: parseInt(count, 10) };
+			});
+		Validator.validateOrder(newOrders);
+		return newOrders;
 	}
 
 	#displayOrderMenus() {}
