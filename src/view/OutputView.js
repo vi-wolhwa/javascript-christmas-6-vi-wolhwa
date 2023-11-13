@@ -1,15 +1,18 @@
+import GENERAL_MESSAGES from '../constant/strings/GeneralMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
-const OutputView = {
-    print(message) {
-        Console.print(message);
-    },
+const MSG = GENERAL_MESSAGES;
 
-    printMenu() {
-        Console.print("<주문 메뉴>");
-        // ...
-    }
-    // ...
-}
+const OutputView = {
+	printIntroduce() {
+		Console.print(MSG.greeting.introduce);
+	},
+
+	printMenu() {
+		Console.print('<주문 메뉴>');
+		// ...
+	}
+	// ...
+};
 
 export default OutputView;

@@ -1,8 +1,5 @@
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
-import GENERAL_MESSAGES from '../constant/strings/GeneralMessages.js';
-
-const MSG = GENERAL_MESSAGES;
 
 class EventPlannerController {
 	run() {
@@ -13,7 +10,7 @@ class EventPlannerController {
 	}
 
 	#displayIntroduce() {
-		OutputView.print(MSG.greeting.introduce);
+		OutputView.printIntroduce();
 	}
 
 	#handleUserInput() {
