@@ -15,7 +15,7 @@ class EventPlannerController {
 
 	async #handleUserInput() {
 		await this.#handleDateInput();
-		this.#handleOrderInput();
+		await this.#handleOrderInput();
 	}
 
 	#displayResultHeader() {}
@@ -34,7 +34,9 @@ class EventPlannerController {
 		const date = await InputView.readDate();
 	}
 
-	#handleOrderInput() {}
+	async #handleOrderInput() {
+		const order = await InputView.readOrder();
+	}
 
 	#displayOrderMenus() {}
 

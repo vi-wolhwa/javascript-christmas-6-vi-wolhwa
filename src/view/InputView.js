@@ -6,6 +6,10 @@ const MSG = GENERAL_MESSAGES;
 const InputView = {
 	async readDate() {
 		return await Console.readLineAsync(MSG.prompt.date);
+	},
+
+	async readOrder() {
+		return await Console.readLineAsync(MSG.prompt.order);
 	}
 };
 
