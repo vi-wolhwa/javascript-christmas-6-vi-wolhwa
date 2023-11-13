@@ -20,32 +20,17 @@ class EventPlannerController {
 	}
 
 	async #handleUserInput() {
-		await this.#handleDateInput();
-		await this.#handleOrdersInput();
-	}
-
-	#displayResultHeader() {}
-
-	#displayResultInOrder() {
-		this.#displayOrderMenus();
-		this.#displayTotalPrice();
-		this.#displayGiveaways();
-		this.#displayBenefitDetails();
-		this.#displayTotalBenefitAmount();
-		this.#displayDiscountedPrice();
-		this.#displayEventBadge();
+		const date = await this.#handleDateInput();
+		const orders = await this.#handleOrdersInput();
+		//TODO: 데이터 저장
 	}
 
 	async #handleDateInput() {
-		const rawDate = await InputView.readDate();
-		const date = this.#preprocessDate(rawDate);
-		//TODO: date 저장, 에러 발생 시 재입력
+		return this.#preprocessDate(InputView.readDate());
 	}
 
 	async #handleOrdersInput() {
-		const rawOrders = await InputView.readOrder();
-		const orders = this.#preprocessOrder(rawOrders);
-		//TODO: order 저장, 에러 발생 시 재입력
+		return this.#preprocessOrder(InputView.readOrder());
 	}
 
 	#preprocessDate(rawDate) {
@@ -66,6 +51,18 @@ class EventPlannerController {
 			});
 		Validator.validateOrder(newOrders);
 		return newOrders;
+	}
+
+	#displayResultHeader() {}
+
+	#displayResultInOrder() {
+		this.#displayOrderMenus();
+		this.#displayTotalPrice();
+		this.#displayGiveaways();
+		this.#displayBenefitDetails();
+		this.#displayTotalBenefitAmount();
+		this.#displayDiscountedPrice();
+		this.#displayEventBadge();
 	}
 
 	#displayOrderMenus() {}
