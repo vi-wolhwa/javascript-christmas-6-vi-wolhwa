@@ -6,8 +6,8 @@ const ERROR = ERROR_MESSAGES;
 
 const MenuNameValidation = DeepFreeze({
 	validate(names) {
-		checkAreUnique(names);
-		checkInMenuData(names);
+		this.checkAreUnique(names);
+		this.checkInMenuData(names);
 	},
 
 	checkAreUnique(names) {
