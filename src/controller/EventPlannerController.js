@@ -2,9 +2,9 @@ import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 
 class EventPlannerController {
-	run() {
+	async run() {
 		this.#displayIntroduce();
-		this.#handleUserInput();
+		await this.#handleUserInput();
 		this.#displayResultHeader();
 		this.#displayResultInOrder();
 	}
@@ -13,8 +13,8 @@ class EventPlannerController {
 		OutputView.printIntroduce();
 	}
 
-	#handleUserInput() {
-		this.#handleDateInput();
+	async #handleUserInput() {
+		await this.#handleDateInput();
 		this.#handleOrderInput();
 	}
 
@@ -30,7 +30,9 @@ class EventPlannerController {
 		this.#displayEventBadge();
 	}
 
-	#handleDateInput() {}
+	async #handleDateInput() {
+		const date = await InputView.readDate();
+	}
 
 	#handleOrderInput() {}
 
