@@ -3,6 +3,7 @@ import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
+import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 
 const Validator = EventPlannerValidator;
 
@@ -27,6 +28,8 @@ class EventPlannerController {
 	async #handleUserInput() {
 		const date = await this.#handleDateInput();
 		const order = await this.#handleOrderInput();
+		this.#order.writeOrderSheet(KEY.date, date);
+		this.#order.writeOrderSheet(KEY.order, order);
 	}
 
 	/**
