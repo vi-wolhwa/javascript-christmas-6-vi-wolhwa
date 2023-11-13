@@ -1,3 +1,4 @@
+import Order from '../domain/Order.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
@@ -6,6 +7,9 @@ import SIGNS from '../constant/strings/Signs.js';
 const Validator = EventPlannerValidator;
 
 class EventPlannerController {
+	/** @type {Order} */
+	#order;
+
 	/** 이벤트 플래너 프로그램을 실행한다. */
 	async run() {
 		this.#displayIntroduce();
@@ -22,7 +26,7 @@ class EventPlannerController {
 	async #handleUserInput() {
 		const date = await this.#handleDateInput();
 		const orders = await this.#handleOrdersInput();
-		//TODO: 데이터 저장
+		this.#order = new Order(date, orders);
 	}
 
 	async #handleDateInput() {
@@ -42,10 +46,10 @@ class EventPlannerController {
 	#preprocessOrder(rawOrders) {
 		const newOrders = rawOrders
 			.split(SIGNS.comma)
-			.map((order) => order.trim())
-			.filter((order) => order !== SIGNS.empty)
-			.map((order) => {
-				const [name, count] = order.split(SIGNS.hyphen);
+			.map((item) => item.trim())
+			.filter((item) => item !== SIGNS.empty)
+			.map((item) => {
+				const [name, count] = item.split(SIGNS.hyphen);
 				name.replace(SIGNS.space, SIGNS.empty);
 				return { name: name, count: parseInt(count, 10) };
 			});
