@@ -24,6 +24,7 @@ const GENERAL_MESSAGES = DeepFreeze({
 			event_badge: '<12월 이벤트 배지>'
 		},
 		content: {
+			nothing: `없음`,
 			order_menu: (name, count) => `${name} ${count}개`,
 			total_price: (amount) => `${amountFormat(amount)}원`,
 			giveaway: (name, count) => `${name} ${count}개`,
