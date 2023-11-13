@@ -6,7 +6,7 @@ describe('DateValidation 모듈 테스트', () => {
 	const lastDate = OPTIONS.date.last_date;
 	const errorPrefix = '[ERROR]';
 
-	test.each([['abc', '12a', '1 2']])('정수가 아닌 값에 대한 예외 발생 테스트', (day) => {
+	test.each([['abc'], ['12a'], ['1 2']])('정수가 아닌 값에 대한 예외 발생 테스트', (day) => {
 		expect(() => {
 			DateValidation.validate();
 		}).toThrow(errorPrefix);
