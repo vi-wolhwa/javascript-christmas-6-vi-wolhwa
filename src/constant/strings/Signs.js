@@ -1,7 +1,7 @@
 import DeepFreeze from '../../util/DeepFreeze.js';
 
 const SIGNS = DeepFreeze({
-	null: '',
+	empty: '',
 	space: ' ',
 	newline: '\n'
 });
