@@ -1,5 +1,8 @@
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
+import EventPlannerValidator from '../validation/EventPlannerValidator.js';
+
+const Validator = EventPlannerValidator;
 
 class EventPlannerController {
 	/** 이벤트 플래너 프로그램을 실행한다. */
@@ -33,11 +36,19 @@ class EventPlannerController {
 	}
 
 	async #handleDateInput() {
-		const date = await InputView.readDate();
+		const rawDate = await InputView.readDate();
+		const date = this.#preprocessDate(rawDate);
+		//TODO: date 저장
 	}
 
 	async #handleOrderInput() {
 		const order = await InputView.readOrder();
+	}
+
+	#preprocessDate(rawDate) {
+		const newDate = rawDate.trim();
+		Validator.validateDate(rawDate);
+		return parseInt(newDate);
 	}
 
 	#displayOrderMenus() {}
