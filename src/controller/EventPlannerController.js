@@ -1,70 +1,55 @@
+import InputView from '../view/InputView.js';
+import OutputView from '../view/OutputView.js';
+import GENERAL_MESSAGES from '../constant/strings/GeneralMessages.js';
+
+const MSG = GENERAL_MESSAGES;
+
 class EventPlannerController {
+	run() {
+		this.#displayIntroduce();
+		this.#handleUserInput();
+		this.#displayResultHeader();
+		this.#displayResultInOrder();
+	}
 
-  run() {
-    this.#displayIntroduce();
-    this.#handleUserInput();
-    this.#displayResultHeader();
-    this.#displayResultInOrder();
-  }
+	#displayIntroduce() {
+		OutputView.print(MSG.greeting.introduce);
+	}
 
-  #displayIntroduce() {
+	#handleUserInput() {
+		this.#handleDateInput();
+		this.#handleOrderInput();
+	}
 
-  }
+	#displayResultHeader() {}
 
-  #handleUserInput() {
-    this.#handleDateInput();
-    this.#handleOrderInput();
-  }
+	#displayResultInOrder() {
+		this.#displayOrderMenus();
+		this.#displayTotalPrice();
+		this.#displayGiveaways();
+		this.#displayBenefitDetails();
+		this.#displayTotalBenefitAmount();
+		this.#displayDiscountedPrice();
+		this.#displayEventBadge();
+	}
 
-  #displayResultHeader() {
+	#handleDateInput() {}
 
-  }
+	#handleOrderInput() {}
 
-  #displayResultInOrder() {
-    this.#displayOrderMenus();
-    this.#displayTotalPrice();
-    this.#displayGiveaways();
-    this.#displayBenefitDetails();
-    this.#displayTotalBenefitAmount();
-    this.#displayDiscountedPrice();
-    this.#displayEventBadge();
-  }
+	#displayOrderMenus() {}
 
-  #handleDateInput() {
+	#displayTotalPrice() {}
 
-  }
+	#displayGiveaways() {}
 
-  #handleOrderInput() {
+	#displayBenefitDetails() {}
 
-  }
+	#displayTotalBenefitAmount() {}
 
-  #displayOrderMenus() {
+	#displayDiscountedPrice() {}
 
-  }
-
-  #displayTotalPrice() {
-
-  }
-
-  #displayGiveaways() {
-
-  }
-
-  #displayBenefitDetails() {
-
-  }
-
-  #displayTotalBenefitAmount() {
-
-  }
-
-  #displayDiscountedPrice() {
-
-  }
-
-  #displayEventBadge() {
-
-  }
+	#displayEventBadge() {}
 }
 
 export default EventPlannerController;
