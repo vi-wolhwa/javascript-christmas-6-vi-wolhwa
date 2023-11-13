@@ -47,7 +47,7 @@ class EventPlannerController {
 
 	/**
 	 * 방문날짜(Date)에 대한 전처리를 수행한다.
-	 * @param {string} rawDate 방문날짜(UserInput)
+	 * @param {Promise<string>} rawDate 방문날짜(UserInput)
 	 * @returns {number} 방문 날짜
 	 */
 	#preprocessDate(rawDate) {
@@ -58,7 +58,7 @@ class EventPlannerController {
 
 	/**
 	 * 주문메뉴(Order)에 대한 전처리를 수행한다.
-	 * @param {string} rawOrder 주문(UserInput)
+	 * @param {Promise<string>} rawOrder 주문(UserInput)
 	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
 	 */
 	#preprocessOrder(rawOrder) {
