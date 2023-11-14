@@ -41,7 +41,7 @@ class Order {
 	 * @param {*} value - OrderSheet에 작성한 데이터
 	 */
 	#autoCalculcate(key, value) {
-		this.#orderSheet.day_of_week ?? (key === KEY.date && this.#calculateDayOfWeek(value));
+		this.#orderSheet.date_of_week ?? (key === KEY.date && this.#calculateDayOfWeek(value));
 		this.#orderSheet.total_price ?? (key === KEY.order && this.#calculateTotalPrice(value));
 		this.#orderSheet.order_count ?? (key === KEY.order && this.#calculateOrderCount(value));
 		this.#orderSheet.total_discount ?? (key === KEY.available_events && this.#calculateTotalDiscount(value));
@@ -67,7 +67,7 @@ class Order {
 		const totalPrice = order.reduce((totalPrice, menu) => {
 			return totalPrice + MENU_DATA[menu.name].price * menu.count;
 		}, 0);
-		this.writeOrderSheet(KEY.total_discount, totalPrice);
+		this.writeOrderSheet(KEY.total_price, totalPrice);
 	}
 
 	/**

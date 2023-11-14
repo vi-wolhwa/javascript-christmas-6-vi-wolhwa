@@ -1,6 +1,7 @@
 import DeepFreeze from '../../util/DeepFreeze.js';
 
 const amountFormat = (amount) => `${amount.toLocaleString()}`;
+const negate = (number) => parseInt(-number, 10);
 
 const GENERAL_MESSAGES = DeepFreeze({
 	greeting: {
@@ -28,8 +29,8 @@ const GENERAL_MESSAGES = DeepFreeze({
 			order_menu: (name, count) => `${name} ${count}개`,
 			total_price: (amount) => `${amountFormat(amount)}원`,
 			giveaway: (name, count) => `${name} ${count}개`,
-			benefit_details: (name, amount) => `${name}: -${amountFormat(amount)}원`,
-			total_benefits: (amount) => `-${amountFormat(amount)}원`,
+			benefit_details: (name, amount) => `${name}: ${amountFormat(negate(amount))}원`,
+			total_benefits: (amount) => `${amountFormat(negate(amount))}원`,
 			discounted_price: (amount) => `${amountFormat(amount)}원`,
 			event_badge: (name) => `${name}`
 		}

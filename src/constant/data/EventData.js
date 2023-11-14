@@ -34,44 +34,45 @@ const EVENT_DATA = DeepFreeze(
 	[
 		{
 			name: '크리스마스 디데이 할인',
-			condition: (orderSheet) => orderSheet.day <= christmas,
-			discount: (orderSheet) => 1000 + 100 * (orderSheet.day - 1),
+			condition: (orderSheet) => orderSheet.date <= christmas && commonCondition(orderSheet),
+			discount: (orderSheet) => 1000 + 100 * (orderSheet.date - 1),
 			giveaways: [],
 			description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
 		},
 		{
 			name: '평일 할인',
-			condition: (orderSheet) => weekday.includes(orderSheet.day_of_week),
+			condition: (orderSheet) => weekday.includes(orderSheet.day_of_week) && commonCondition(orderSheet),
 			discount: (orderSheet) => 2023 * orderSheet.order_count[category.dessert],
 			giveaways: [],
 			description: '평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인'
 		},
 		{
 			name: '주말 할인',
-			condition: (orderSheet) => weekend.includes(orderSheet.day_of_week),
+			condition: (orderSheet) => weekend.includes(orderSheet.day_of_week) && commonCondition(orderSheet),
 			discount: (orderSheet) => 2023 * orderSheet.order_count[category.main],
 			giveaways: [],
 			description: '주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인'
 		},
 		{
 			name: '특별 할인',
-			condition: (orderSheet) => starDay.includes(orderSheet.day),
+			condition: (orderSheet) => starDay.includes(orderSheet.date) && commonCondition(orderSheet),
 			discount: () => 1000,
 			giveaways: [],
 			description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'
 		},
 		{
 			name: '증정 이벤트',
-			condition: (orderSheet) => orderSheet.total_price >= 120000,
+			condition: (orderSheet) => orderSheet.total_price >= 120000 && commonCondition(orderSheet),
 			discount: () => 0,
 			giveaways: [{ menu: MENU_DATA['샴페인'], count: 1 }],
 			description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
 		}
-	].map((eventData) => {
-		const individualCondition = eventData.condition;
-		eventData.condition = (orderSheet) => individualCondition(orderSheet) && commonCondition(orderSheet);
-		return eventData;
-	})
+	]
+	// 	.map((eventData) => {
+	// 	const individualCondition = eventData.condition;
+	// 	eventData.condition = (orderSheet) => individualCondition(orderSheet) && commonCondition(orderSheet);
+	// 	return eventData;
+	// })
 );
 
 export default EVENT_DATA;

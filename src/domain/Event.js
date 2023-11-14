@@ -1,5 +1,7 @@
 import { BENEFIT } from '../constant/template/Templates.js';
 
+const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;
+
 class Event {
 	#name;
 	#condition;
@@ -11,8 +13,8 @@ class Event {
 		this.#name = eventData.name;
 		this.#condition = eventData.condition;
 		this.#discount = eventData.discount;
-		this.giveaways = eventData.giveaways;
-		this.#description = eventData.giveaways;
+		this.#giveaways = eventData.giveaways;
+		this.#description = eventData.description;
 	}
 
 	lookupAvailableBenefit(orderSheet) {

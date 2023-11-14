@@ -1,4 +1,4 @@
-import DeepFreeze from '../util/DeepFreeze';
+import DeepFreeze from '../util/DeepFreeze.js';
 
 const NULL = '없음';
 

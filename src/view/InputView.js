@@ -9,6 +9,8 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readDate() {
+		// TEST:
+		//return '45';
 		return await Console.readLineAsync(MSG.prompt.date);
 	},
 
@@ -17,6 +19,8 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readOrder() {
+		// TEST:
+		//return '타파스-1,제로콜라-1 ';
 		return await Console.readLineAsync(MSG.prompt.order);
 	}
 };

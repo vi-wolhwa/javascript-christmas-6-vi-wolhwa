@@ -21,13 +21,13 @@ const OPTIONS = DeepFreeze({
 		first_date: 1,
 		last_date: 31,
 		days_of_week: {
-			0: 'Sunday',
-			1: 'Monday',
-			2: 'Tuesday',
-			3: 'Wednesday',
-			4: 'Thursday',
-			5: 'Friday',
-			6: 'Saturday'
+			0: '일요일',
+			1: '월요일',
+			2: '화요일',
+			3: '수요일',
+			4: '목요일',
+			5: '금요일',
+			6: '토요일'
 		}
 	}
 });

@@ -5,7 +5,8 @@ import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import { MENU } from '../constant/template/Templates.js';
-import Events from './../domain/Events';
+import Events from './../domain/Events.js';
+import PrintObject from './../util/PrintObject.js';
 
 const Validator = EventPlannerValidator;
 
@@ -41,7 +42,12 @@ class EventPlannerController {
 	 * @returns {number} 방문 날짜
 	 */
 	async #handleDateInput() {
-		return this.#preprocessDate(await InputView.readDate());
+		try {
+			return this.#preprocessDate(await InputView.readDate());
+		} catch (error) {
+			OutputView.print(error.message);
+			return this.#handleDateInput();
+		}
 	}
 
 	/**
@@ -49,7 +55,12 @@ class EventPlannerController {
 	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
 	 */
 	async #handleOrderInput() {
-		return this.#preprocessOrder(await InputView.readOrder());
+		try {
+			return this.#preprocessOrder(await InputView.readOrder());
+		} catch (error) {
+			OutputView.print(error.message);
+			return this.#handleOrderInput();
+		}
 	}
 
 	/**
@@ -75,8 +86,7 @@ class EventPlannerController {
 			.filter((menu) => menu !== SIGNS.empty)
 			.map((menu) => {
 				const [name, count] = menu.split(SIGNS.hyphen);
-				name = name.replace(SIGNS.space, SIGNS.empty);
-				return MENU(name, parseInt(count, 10));
+				return MENU(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
 			});
 		Validator.validateOrder(newOrder);
 		return newOrder;
@@ -90,7 +100,8 @@ class EventPlannerController {
 	}
 
 	#displayResultHeader() {
-		OutputView.printResultHeader();
+		const date = this.#order.readOrderSheet(KEY.date);
+		OutputView.printResultHeader(date);
 	}
 
 	#displayResultInOrder() {
