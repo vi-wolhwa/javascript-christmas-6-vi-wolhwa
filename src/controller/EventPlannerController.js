@@ -86,7 +86,8 @@ class EventPlannerController {
 	 */
 	#processEventBenefits() {
 		const orderSheet = this.#order.getOrderSheet();
-		const availableBenefits = this.#events.lookupAvailableBenefits(orderSheet);
+		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
+		this.#order.writeOrderSheet(KEY.available_events, benefits);
 	}
 
 	#displayResultHeader() {}
