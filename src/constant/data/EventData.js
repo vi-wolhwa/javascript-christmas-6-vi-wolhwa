@@ -28,48 +28,48 @@ const starDay = [3, 10, 17, 24, 25, 31];
 const weekday = Object.values(dow).slice(0, 5);
 const weekend = Object.values(dow).slice(5, 7);
 
-const commonCondition = (orderForm) => orderForm.total_price >= 10000;
+const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;
 
 const EVENT_DATA = DeepFreeze(
 	[
 		{
 			name: '크리스마스 디데이 할인',
-			condition: (orderForm) => orderForm.day <= christmas,
-			discount: (orderForm) => 1000 + 100 * (orderForm.day - 1),
-			giveaway: [],
+			condition: (orderSheet) => orderSheet.day <= christmas,
+			discount: (orderSheet) => 1000 + 100 * (orderSheet.day - 1),
+			giveaways: [],
 			description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
 		},
 		{
 			name: '평일 할인',
-			condition: (orderForm) => weekday.includes(orderForm.day_of_week),
-			discount: (orderForm) => 2023 * orderForm.count[category.dessert],
-			giveaway: [],
+			condition: (orderSheet) => weekday.includes(orderSheet.day_of_week),
+			discount: (orderSheet) => 2023 * orderSheet.order_count[category.dessert],
+			giveaways: [],
 			description: '평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인'
 		},
 		{
 			name: '주말 할인',
-			condition: (orderForm) => weekend.includes(orderForm.day_of_week),
-			discount: (orderForm) => 2023 * orderForm.count[category.main],
-			giveaway: [],
+			condition: (orderSheet) => weekend.includes(orderSheet.day_of_week),
+			discount: (orderSheet) => 2023 * orderSheet.order_count[category.main],
+			giveaways: [],
 			description: '주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인'
 		},
 		{
 			name: '특별 할인',
-			condition: (orderForm) => starDay.includes(orderForm.day),
+			condition: (orderSheet) => starDay.includes(orderSheet.day),
 			discount: () => 1000,
-			giveaway: [],
+			giveaways: [],
 			description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'
 		},
 		{
 			name: '증정 이벤트',
-			condition: (orderForm) => orderForm.total_price >= 120000,
+			condition: (orderSheet) => orderSheet.total_price >= 120000,
 			discount: () => 0,
-			giveaway: [{ name: MENU_DATA['샴페인'], count: 1 }],
+			giveaways: [{ menu: MENU_DATA['샴페인'], count: 1 }],
 			description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
 		}
 	].map((eventData) => {
 		const individualCondition = eventData.condition;
-		eventData.condition = (orderForm) => individualCondition(orderForm) && commonCondition(orderForm);
+		eventData.condition = (orderSheet) => individualCondition(orderSheet) && commonCondition(orderSheet);
 		return eventData;
 	})
 );
