@@ -1,4 +1,4 @@
-import PROMPT_MESSAGES from '../constant/string/PromptMessages';
+import PROMPT_MESSAGES from '../constant/string/PromptMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
 const InputView = {
@@ -6,7 +6,7 @@ const InputView = {
 	 * 방문일자 입력 프롬프트를 출력하고, 사용자 입력을 받는다.
 	 * @returns {string} 사용자 입력
 	 */
-	async readDate() {
+	async readVisitDay() {
 		return await Console.readLineAsync(PROMPT_MESSAGES.visit_day);
 	},
 
@@ -14,8 +14,8 @@ const InputView = {
 	 * 주문 메뉴 입력 프롬프트를 출력하고, 사용자 입력을 받는다.
 	 * @returns {string} 사용자 입력
 	 */
-	async readOrder() {
-		return await Console.readLineAsync(PROMPT_MESSAGES.order_menu);
+	async readMenuOrders() {
+		return await Console.readLineAsync(PROMPT_MESSAGES.menu_orders);
 	}
 };
 

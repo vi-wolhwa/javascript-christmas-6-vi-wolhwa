@@ -41,9 +41,9 @@ class Order {
 	 * @param {*} value - OrderSheet에 작성한 데이터
 	 */
 	#autoCalculcate(key, value) {
-		this.#orderSheet.date_of_week ?? (key === KEY.date && this.#calculateDayOfWeek(value));
-		this.#orderSheet.total_price ?? (key === KEY.order && this.#calculateTotalPrice(value));
-		this.#orderSheet.order_count ?? (key === KEY.order && this.#calculateOrderCount(value));
+		this.#orderSheet.day_of_week ?? (key === KEY.visitDay && this.#calculateDayOfWeek(value));
+		this.#orderSheet.total_price ?? (key === KEY.menuOrders && this.#calculateTotalPrice(value));
+		this.#orderSheet.order_count ?? (key === KEY.menuOrders && this.#calculateOrderCount(value));
 		this.#orderSheet.total_discount ?? (key === KEY.available_events && this.#calculateTotalDiscount(value));
 		this.#orderSheet.total_benefits ?? (key === KEY.total_discount && this.#calculateTotalBenefits(value));
 		this.#orderSheet.discounted_price ?? (key === KEY.total_discount && this.#calculateDiscountedPrice(value));

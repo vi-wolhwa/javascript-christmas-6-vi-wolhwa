@@ -6,13 +6,13 @@
  */
 
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
-import OPTIONS from './../../constant/Options.js';
+import OPTIONS from '../../constant/Options.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 
 const DATE = OPTIONS.date;
 const ERROR = ERROR_MESSAGES;
 
-const DateValidation = DeepFreeze({
+const VisitDayValidation = DeepFreeze({
 	validate(date) {
 		this.checkIsInteger(date);
 		this.checkInRange(date, DATE.first_date, DATE.last_date);
@@ -31,4 +31,4 @@ const DateValidation = DeepFreeze({
 	}
 });
 
-export default DateValidation;
+export default VisitDayValidation;

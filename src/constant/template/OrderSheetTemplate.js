@@ -4,8 +4,6 @@
  * key 파라미터에는 ORDER_SHEET_KEYS를 참조하여 입력한다.
  */
 
-import DeepFreeze from '../../util/DeepFreeze.js';
-
 // 객체의 key를 추출하여 object{ key1: 'key1', ... }를 반환한다.
 const extractKeys = (sourceObject) => {
 	return Object.keys(sourceObject).reduce((result, key) => {
@@ -15,9 +13,9 @@ const extractKeys = (sourceObject) => {
 };
 
 const ORDER_SHEET = {
-	date: null,
+	visitDay: null,
 	day_of_week: null,
-	order: [],
+	menuOrders: [],
 	order_count: null,
 	total_price: null,
 	available_events: [],
@@ -27,6 +25,6 @@ const ORDER_SHEET = {
 	event_badge: null
 };
 
-const ORDER_SHEET_KEYS = DeepFreeze(extractKeys(ORDER_SHEET));
+const ORDER_SHEET_KEYS = Object.freeze(extractKeys(ORDER_SHEET));
 
 export { ORDER_SHEET, ORDER_SHEET_KEYS };

@@ -34,8 +34,8 @@ const EVENT_DATA = DeepFreeze(
 	[
 		{
 			name: '크리스마스 디데이 할인',
-			condition: (orderSheet) => orderSheet.date <= christmas && commonCondition(orderSheet),
-			discount: (orderSheet) => 1000 + 100 * (orderSheet.date - 1),
+			condition: (orderSheet) => orderSheet.visitDay <= christmas && commonCondition(orderSheet),
+			discount: (orderSheet) => 1000 + 100 * (orderSheet.visitDay - 1),
 			giveaways: [],
 			description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
 		},
@@ -55,7 +55,7 @@ const EVENT_DATA = DeepFreeze(
 		},
 		{
 			name: '특별 할인',
-			condition: (orderSheet) => starDay.includes(orderSheet.date) && commonCondition(orderSheet),
+			condition: (orderSheet) => starDay.includes(orderSheet.visitDay) && commonCondition(orderSheet),
 			discount: () => 1000,
 			giveaways: [],
 			description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'

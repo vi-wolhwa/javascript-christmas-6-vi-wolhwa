@@ -1,26 +1,25 @@
-import DateValidation from './eventPlannerValidation/DateValidation.js';
+import VisitDayValidation from './eventPlannerValidation/VisitDayValidation.js';
 import MenuNameValidation from './eventPlannerValidation/MenuNameValidation.js';
 import MenuCountValidation from './eventPlannerValidation/MenuCountValidation.js';
-import DeepFreeze from '../util/DeepFreeze.js';
 
 /** EventPlanner 내에서 유효성검사를 담당하는 Validator */
-const EventPlannerValidator = DeepFreeze({
+const EventPlannerValidator = {
 	/**
 	 * 방문일자(UserInput)에 대하여 유효성검사를 수행한다.
-	 * @param {string} date 방문일자
+	 * @param {string} visitDay 방문일자
 	 */
-	validateDate(date) {
-		DateValidation.validate(date);
+	validateVisitDay(visitDay) {
+		VisitDayValidation.validate(visitDay);
 	},
 
 	/**
 	 * 주문(UserInput)에 대하여 유효성검사를 수행한다.
-	 * @param {Array<object>} order 주문
+	 * @param {Array<object>} menuOrders 메뉴주문목록
 	 */
-	validateOrder(order) {
-		MenuNameValidation.validate(order.map((menu) => menu.name));
-		MenuCountValidation.validate(order.map((menu) => menu.count));
+	validateMenuOrders(menuOrders) {
+		MenuNameValidation.validate(menuOrders.map((menu) => menu.name));
+		MenuCountValidation.validate(menuOrders.map((menu) => menu.count));
 	}
-});
+};
 
 export default EventPlannerValidator;

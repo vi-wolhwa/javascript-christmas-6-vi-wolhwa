@@ -11,15 +11,14 @@ import ExceptionHandler from './../error/ExceptionHandler.js';
 const Validator = EventPlannerValidator;
 
 class EventPlannerController {
-	/** @type {Order} */
 	#order = new Order();
 	#events = new Events();
 
 	// 이벤트 플래너 프로그램을 실행한다.
 	async run() {
 		this.#displayIntroduce();
-		await this.#handleUserInput();
-		this.#processEventBenefits();
+		const { visitDay, menuOrders } = await this.#handleUserInput();
+		this.#processLookupEvents(visitDay, menuOrders);
 		this.#displayResultHeader();
 		this.#displayResultInOrder();
 	}
@@ -29,85 +28,83 @@ class EventPlannerController {
 		OutputView.printIntroduce();
 	}
 
-	// 사용자 입력을 처리하고, 주문서(OrderSheet)를 작성한다.
+	/**
+	 * 방문날짜, 메뉴주문목록에 대한 입력을 처리하고, 결과를 반환한다.
+	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴목록 }
+	 */
 	async #handleUserInput() {
-		const date = await ExceptionHandler.handleAsyncExceptionAndRetry(() => {
-			return this.#handleDateInput();
+		const visitDay = await ExceptionHandler.retryAsyncWithErrorLogging(() => {
+			return this.#handleVisitDayInput();
 		});
-		const order = await ExceptionHandler.handleAsyncExceptionAndRetry(() => {
-			return this.#handleOrderInput();
+		const menuOrders = await ExceptionHandler.retryAsyncWithErrorLogging(() => {
+			return this.#handleMenuOrdersInput();
 		});
-		// const date = await this.#handleDateInput();
-		// const order = await this.#handleOrderInput();
-		this.#order.writeOrderSheet(KEY.date, date);
-		this.#order.writeOrderSheet(KEY.order, order);
+		return { visitDay, menuOrders };
 	}
 
 	/**
-	 * 방문날짜(Date)에 대한 처리를 담당한다.
-	 * @returns {number} 방문 날짜
+	 * 방문날짜에 대한 입력과 전처리를 담당한다.
+	 * @returns {number} 방문날짜
 	 */
-	async #handleDateInput() {
-		try {
-			return this.#preprocessDate(await InputView.readDate());
-		} catch (error) {
-			OutputView.print(error.message);
-			return this.#handleDateInput();
-		}
+	async #handleVisitDayInput() {
+		return this.#preprocessVisitDay(await InputView.readVisitDay());
 	}
 
 	/**
-	 * 주문메뉴(Order)에 대한 처리를 담당한다.
-	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
+	 * 메뉴주문목록에 대한 입력과 전처리를 담당한다.
+	 * @returns {Array<object>} 메뉴주문목록 {메뉴명, 개수}
 	 */
-	async #handleOrderInput() {
-		try {
-			return this.#preprocessOrder(await InputView.readOrder());
-		} catch (error) {
-			OutputView.print(error.message);
-			return this.#handleOrderInput();
-		}
+	async #handleMenuOrdersInput() {
+		return this.#preprocessMenuOrders(await InputView.readMenuOrders());
 	}
 
 	/**
-	 * 방문날짜(Date)에 대한 전처리를 수행한다.
-	 * @param {Promise<string>} rawDate 방문날짜(UserInput)
-	 * @returns {number} 방문 날짜
+	 * 사용자가 입력한 방문날짜에 대한 전처리를 수행한다.
+	 * @param {Promise<string>} visitDay - 방문날짜(UserInput)
+	 * @returns {number} 방문날짜(Processed)
 	 */
-	#preprocessDate(rawDate) {
-		const newDate = rawDate.trim();
-		Validator.validateDate(rawDate);
-		return parseInt(newDate, 10);
+	#preprocessVisitDay(visitDay) {
+		Validator.validateVisitDay(visitDay.trim());
+		return parseInt(visitDay.trim(), 10);
 	}
 
 	/**
-	 * 주문메뉴(Order)에 대한 전처리를 수행한다.
-	 * @param {Promise<string>} rawOrder 주문(UserInput)
-	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
+	 * 사용자가 입력한 메뉴 주문 목록에 대한 전처리를 수행한다.
+	 * @param {Promise<string>} menuOrders - 메뉴주문목록(UserInput)
+	 * @returns {Array<object>} 메뉴주문목록 {메뉴명, 개수}
 	 */
-	#preprocessOrder(rawOrder) {
-		const newOrder = rawOrder
+	#preprocessMenuOrders(menuOrders) {
+		const preprocessMenu = (menu) => {
+			const [name, count] = menu.split(SIGNS.hyphen);
+			return MENU(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
+		};
+
+		const newMenuOrders = menuOrders
 			.split(SIGNS.comma)
 			.map((menu) => menu.trim())
 			.filter((menu) => menu !== SIGNS.empty)
-			.map((menu) => {
-				const [name, count] = menu.split(SIGNS.hyphen);
-				return MENU(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
-			});
-		Validator.validateOrder(newOrder);
-		return newOrder;
+			.map(preprocessMenu);
+
+		Validator.validateMenuOrders(newMenuOrders);
+		return newMenuOrders;
 	}
 
-	// 가능한 이벤트 혜택을 조회하고, 주문서(OrderSheet)에 내용을 추가한다.
-	#processEventBenefits() {
+	/**
+	 * 가능한 이벤트 혜택을 조회하고, 주문서에 내용을 추가한다.
+	 * @param {number} visitDay
+	 * @param {object} menuOrders
+	 */
+	#processLookupEvents(visitDay, menuOrders) {
+		this.#order.writeOrderSheet(KEY.visitDay, visitDay);
+		this.#order.writeOrderSheet(KEY.menuOrders, menuOrders);
 		const orderSheet = this.#order.getOrderSheet();
 		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
 		this.#order.writeOrderSheet(KEY.available_events, benefits);
 	}
 
 	#displayResultHeader() {
-		const date = this.#order.readOrderSheet(KEY.date);
-		OutputView.printResultHeader(date);
+		const visitDay = this.#order.readOrderSheet(KEY.visitDay);
+		OutputView.printResultHeader(visitDay);
 	}
 
 	#displayResultInOrder() {
@@ -121,7 +118,7 @@ class EventPlannerController {
 	}
 
 	#displayOrderMenus() {
-		const orderMenus = this.#order.readOrderSheet(KEY.order);
+		const orderMenus = this.#order.readOrderSheet(KEY.menuOrders);
 		OutputView.printOrderMenus(orderMenus);
 	}
 
