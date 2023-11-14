@@ -41,7 +41,7 @@ class EventPlannerController {
 	 * @returns {number} 방문 날짜
 	 */
 	async #handleDateInput() {
-		return this.#preprocessDate(InputView.readDate());
+		return this.#preprocessDate(await InputView.readDate());
 	}
 
 	/**
@@ -49,7 +49,7 @@ class EventPlannerController {
 	 * @returns {Array<object>} 주문 메뉴 목록 {메뉴명, 개수}
 	 */
 	async #handleOrderInput() {
-		return this.#preprocessOrder(InputView.readOrder());
+		return this.#preprocessOrder(await InputView.readOrder());
 	}
 
 	/**
