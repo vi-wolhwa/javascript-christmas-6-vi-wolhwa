@@ -3,7 +3,8 @@ import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
-import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
+import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
+import MENU from './../constant/template/SingleOrderTemplate.js';
 
 const Validator = EventPlannerValidator;
 
@@ -73,12 +74,15 @@ class EventPlannerController {
 			.map((menu) => {
 				const [name, count] = menu.split(SIGNS.hyphen);
 				name.replace(SIGNS.space, SIGNS.empty);
-				return { name: name, count: parseInt(count, 10) };
+				return MENU(name, parseInt(count, 10));
 			});
 		Validator.validateOrder(newOrder);
 		return newOrder;
 	}
 
+	/**
+	 *
+	 */
 	#processEventBenefits() {
 		const orderSheet = this.#order.getOrderSheet();
 	}
