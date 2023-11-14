@@ -7,11 +7,11 @@ const MENU = (name, count) => {
 	});
 };
 
-const BENEFIT = (name, discount, giveways) => {
+const BENEFIT = (name, discount, giveaways) => {
 	return DeepFreeze({
 		name: name,
 		discount: discount,
-		giveways: giveways
+		giveaways: giveaways
 	});
 };
 

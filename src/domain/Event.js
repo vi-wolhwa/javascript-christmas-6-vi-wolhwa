@@ -12,7 +12,7 @@ class Event {
 		this.#condition = eventData.condition;
 		this.#discount = eventData.discount;
 		this.giveaways = eventData.giveaways;
-		this.#description = eventData.giveways;
+		this.#description = eventData.giveaways;
 	}
 
 	lookupAvailableBenefit(orderSheet) {
