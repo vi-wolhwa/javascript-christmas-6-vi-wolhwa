@@ -88,7 +88,9 @@ class EventPlannerController {
 		this.#order.writeOrderSheet(KEY.available_events, benefits);
 	}
 
-	#displayResultHeader() {}
+	#displayResultHeader() {
+		OutputView.printResultHeader();
+	}
 
 	#displayResultInOrder() {
 		this.#displayOrderMenus();

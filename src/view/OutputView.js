@@ -9,11 +9,10 @@ const OutputView = {
 		Console.print(MSG.greeting.introduce);
 	},
 
-	printMenu() {
-		Console.print('<주문 메뉴>');
-		// ...
-	},
-	// ...
+	// Result-Header 메시지를 출력한다.
+	printResultHeader() {
+		Console.print(MSG.greeting.result_header);
+	}
 };
 
 export default OutputView;
