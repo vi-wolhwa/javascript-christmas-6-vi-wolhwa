@@ -20,7 +20,6 @@ import OPTIONS from '../Options.js';
 import MENU_DATA from '../data/MenuData.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 
-const type = OPTIONS.event.type;
 const dow = OPTIONS.date.days_of_week;
 const category = OPTIONS.menu.category;
 
@@ -29,46 +28,50 @@ const starDay = [3, 10, 17, 24, 25, 31];
 const weekday = Object.values(dow).slice(0, 5);
 const weekend = Object.values(dow).slice(5, 7);
 
-const EVENT_CONDITION = (orderForm) => orderForm.total_price >= 10000;
+const commonCondition = (orderForm) => orderForm.total_price >= 10000;
 
-const EVENT_DATA = DeepFreeze([
-	{
-		name: '크리스마스 디데이 할인',
-		condition: (orderForm) => orderForm.day <= christmas,
-		discount: (orderForm) => 1000 + 100 * (orderForm.day - 1),
-		giveaway: [],
-		description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
-	},
-	{
-		name: '평일 할인',
-		condition: (orderForm) => weekday.includes(orderForm.day_of_week),
-		discount: (orderForm) => 2023 * orderForm.count[category.dessert],
-		giveaway: [],
-		description: '평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인'
-	},
-	{
-		name: '주말 할인',
-		condition: (orderForm) => weekend.includes(orderForm.day_of_week),
-		discount: (orderForm) => 2023 * orderForm.count[category.main],
-		giveaway: [],
-		description: '주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인'
-	},
-	{
-		name: '특별 할인',
-		condition: (orderForm) => starDay.includes(orderForm.day),
-		discount: () => 1000,
-		giveaway: [],
-		description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'
-	},
-	{
-		name: '증정 이벤트',
-		condition: (orderForm) => orderForm.total_price >= 120000,
-		discount: () => 0,
-		giveaway: [{ name: MENU_DATA['샴페인'], count: 1 }],
-		description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
-	}
-]);
+const EVENT_DATA = DeepFreeze(
+	[
+		{
+			name: '크리스마스 디데이 할인',
+			condition: (orderForm) => orderForm.day <= christmas,
+			discount: (orderForm) => 1000 + 100 * (orderForm.day - 1),
+			giveaway: [],
+			description: '크리스마스가 다가올수록 날마다 할인 금액이 1,000원부터 100원씩 증가'
+		},
+		{
+			name: '평일 할인',
+			condition: (orderForm) => weekday.includes(orderForm.day_of_week),
+			discount: (orderForm) => 2023 * orderForm.count[category.dessert],
+			giveaway: [],
+			description: '평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인'
+		},
+		{
+			name: '주말 할인',
+			condition: (orderForm) => weekend.includes(orderForm.day_of_week),
+			discount: (orderForm) => 2023 * orderForm.count[category.main],
+			giveaway: [],
+			description: '주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인'
+		},
+		{
+			name: '특별 할인',
+			condition: (orderForm) => starDay.includes(orderForm.day),
+			discount: () => 1000,
+			giveaway: [],
+			description: '이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인'
+		},
+		{
+			name: '증정 이벤트',
+			condition: (orderForm) => orderForm.total_price >= 120000,
+			discount: () => 0,
+			giveaway: [{ name: MENU_DATA['샴페인'], count: 1 }],
+			description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
+		}
+	].map((eventData) => {
+		const individualCondition = eventData.condition;
+		eventData.condition = (orderForm) => individualCondition(orderForm) && commonCondition(orderForm);
+		return eventData;
+	})
+);
 
-console.log(EVENT_DATA[3].giveaway);
-
-export { EVENT_DATA, EVENT_CONDITION };
+export default EVENT_DATA;
