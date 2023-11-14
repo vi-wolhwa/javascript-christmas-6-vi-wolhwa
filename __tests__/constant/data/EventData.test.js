@@ -16,9 +16,9 @@ describe('EVENT_DATA 모듈 테스트', () => {
 		const event = EVENT_DATA[0];
 
 		// 이벤트 조건 경계값 테스트
-		orderSheet.day = 25;
+		orderSheet.date = 25;
 		expect(event.condition(orderSheet)).toBeTruthy();
-		orderSheet.day = 26;
+		orderSheet.date = 26;
 		expect(event.condition(orderSheet)).toBeFalsy();
 
 		// 공통 조건 테스트
@@ -26,7 +26,7 @@ describe('EVENT_DATA 모듈 테스트', () => {
 		expect(event.condition(orderSheet)).toBeFalsy();
 
 		// 할인 금액 테스트
-		orderSheet.day = 25;
+		orderSheet.date = 25;
 		expect(event.discount(orderSheet)).toBe(3400);
 	});
 
@@ -37,13 +37,13 @@ describe('EVENT_DATA 모듈 테스트', () => {
 
 		// 이벤트 조건 테스트 (주말)
 		weekend.forEach((dayOfWeek) => {
-			orderSheet.day_of_week = dayOfWeek;
+			orderSheet.date_of_week = dayOfWeek;
 			expect(event.condition(orderSheet)).toBeFalsy();
 		});
 
 		// 이벤트 조건 테스트 (평일)
 		weekday.forEach((dayOfWeek) => {
-			orderSheet.day_of_week = dayOfWeek;
+			orderSheet.date_of_week = dayOfWeek;
 			expect(event.condition(orderSheet)).toBeTruthy();
 		});
 
@@ -63,13 +63,13 @@ describe('EVENT_DATA 모듈 테스트', () => {
 
 		// 이벤트 조건 테스트 (평일)
 		weekday.forEach((dayOfWeek) => {
-			orderSheet.day_of_week = dayOfWeek;
+			orderSheet.date_of_week = dayOfWeek;
 			expect(event.condition(orderSheet)).toBeFalsy();
 		});
 
 		// 이벤트 조건 테스트 (주말)
 		weekend.forEach((dayOfWeek) => {
-			orderSheet.day_of_week = dayOfWeek;
+			orderSheet.date_of_week = dayOfWeek;
 			expect(event.condition(orderSheet)).toBeTruthy();
 		});
 
@@ -87,11 +87,11 @@ describe('EVENT_DATA 모듈 테스트', () => {
 		const starDay = [3, 10, 17, 24, 25, 31];
 
 		// 이벤트 조건 테스트
-		orderSheet.day = 26;
+		orderSheet.date = 26;
 		expect(event.condition(orderSheet)).toBeFalsy();
 
 		starDay.forEach((day) => {
-			orderSheet.day = day;
+			orderSheet.date = day;
 			expect(event.condition(orderSheet)).toBeTruthy();
 		});
 
