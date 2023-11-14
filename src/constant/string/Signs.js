@@ -1,6 +1,4 @@
-import DeepFreeze from '../../util/DeepFreeze.js';
-
-const SIGNS = DeepFreeze({
+const SIGNS = Object.freeze({
 	zero: 0,
 	empty: '',
 	space: ' ',

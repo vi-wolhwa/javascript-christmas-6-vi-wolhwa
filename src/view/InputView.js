@@ -7,7 +7,7 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readDate() {
-		return await Console.readLineAsync(PROMPT_MESSAGES.date);
+		return await Console.readLineAsync(PROMPT_MESSAGES.visit_day);
 	},
 
 	/**
@@ -15,7 +15,7 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readOrder() {
-		return await Console.readLineAsync(PROMPT_MESSAGES.order);
+		return await Console.readLineAsync(PROMPT_MESSAGES.order_menu);
 	}
 };
 
