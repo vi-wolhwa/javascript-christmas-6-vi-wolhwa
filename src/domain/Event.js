@@ -1,3 +1,5 @@
+import { BENEFIT } from '../constant/template/Templates.js';
+
 class Event {
 	#name;
 	#condition;
@@ -11,6 +13,16 @@ class Event {
 		this.#discount = eventData.discount;
 		this.giveaways = eventData.giveaways;
 		this.#description = eventData.giveways;
+	}
+
+	lookupAvailableBenefit(orderSheet) {
+		if (this.#isEventTarget(orderSheet)) {
+			return BENEFIT(this.#name, this.#discount(orderSheet), this.#giveaways);
+		}
+	}
+
+	#isEventTarget(orderSheet) {
+		return this.#condition(orderSheet);
 	}
 }
 

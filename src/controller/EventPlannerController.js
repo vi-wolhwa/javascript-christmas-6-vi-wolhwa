@@ -4,13 +4,14 @@ import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
-import MENU from './../constant/template/SingleOrderTemplate.js';
+import { MENU } from '../constant/template/Templates.js';
 
 const Validator = EventPlannerValidator;
 
 class EventPlannerController {
 	/** @type {Order} */
 	#order = new Order();
+	#events = new Events();
 
 	// 이벤트 플래너 프로그램을 실행한다.
 	async run() {
@@ -85,6 +86,7 @@ class EventPlannerController {
 	 */
 	#processEventBenefits() {
 		const orderSheet = this.#order.getOrderSheet();
+		const availableBenefits = this.#events.lookupAvailableBenefits(orderSheet);
 	}
 
 	#displayResultHeader() {}
