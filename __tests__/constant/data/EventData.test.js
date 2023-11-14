@@ -52,7 +52,7 @@ describe('EVENT_DATA 모듈 테스트', () => {
 		expect(event.condition(orderSheet)).toBeFalsy();
 
 		// 할인 금액 테스트
-		orderSheet.order_count[category.dessert] = 2;
+		orderSheet.order_count = { [category.dessert]: 2 };
 		expect(event.discount(orderSheet)).toBe(4046);
 	});
 
@@ -78,7 +78,7 @@ describe('EVENT_DATA 모듈 테스트', () => {
 		expect(event.condition(orderSheet)).toBeFalsy();
 
 		// 할인 금액 테스트
-		orderSheet.order_count[category.main] = 2;
+		orderSheet.order_count = { [category.main]: 2 };
 		expect(event.discount(orderSheet)).toBe(4046);
 	});
 
