@@ -6,7 +6,6 @@ import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import { MENU } from '../constant/template/Templates.js';
 import Events from './../domain/Events.js';
-import PrintObject from './../util/PrintObject.js';
 
 const Validator = EventPlannerValidator;
 

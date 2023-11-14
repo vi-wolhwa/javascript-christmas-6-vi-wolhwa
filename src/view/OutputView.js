@@ -1,7 +1,7 @@
 import GENERAL_MESSAGES from '../constant/string/GeneralMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
-const MSG = GENERAL_MESSAGES;
+const MESSAGES = GENERAL_MESSAGES;
 const TITLE = GENERAL_MESSAGES.result.title;
 const CONTENT = GENERAL_MESSAGES.result.content;
 
@@ -16,12 +16,12 @@ const OutputView = {
 
 	// Introduce 메시지를 출력한다.
 	printIntroduce() {
-		Console.print(MSG.greeting.introduce);
+		Console.print(MESSAGES.greeting.introduce);
 	},
 
 	// Result-Header 메시지를 출력한다.
 	printResultHeader(date) {
-		Console.print(MSG.greeting.result_header(date));
+		Console.print(MESSAGES.greeting.result_header(date));
 	},
 
 	/**

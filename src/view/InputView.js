@@ -1,7 +1,5 @@
-import GENERAL_MESSAGES from '../constant/string/GeneralMessages.js';
+import PROMPT_MESSAGES from '../constant/string/PromptMessages';
 import { Console } from '@woowacourse/mission-utils';
-
-const MSG = GENERAL_MESSAGES;
 
 const InputView = {
 	/**
@@ -9,9 +7,7 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readDate() {
-		// TEST:
-		//return '45';
-		return await Console.readLineAsync(MSG.prompt.date);
+		return await Console.readLineAsync(PROMPT_MESSAGES.date);
 	},
 
 	/**
@@ -19,9 +15,7 @@ const InputView = {
 	 * @returns {string} 사용자 입력
 	 */
 	async readOrder() {
-		// TEST:
-		//return '타파스-1,제로콜라-1 ';
-		return await Console.readLineAsync(MSG.prompt.order);
+		return await Console.readLineAsync(PROMPT_MESSAGES.order);
 	}
 };
 
