@@ -44,11 +44,16 @@ const OutputView = {
 		benefitDetails.forEach((detail) => {
 			Console.print(CONTENT.benefit_details(detail.name, detail.amount));
 		});
-	}
+	},
 
 	printTotalBenefitsAmount(totalBenefitAmount) {
 		Console.print(TITLE.total_benefits);
 		Console.print(totalBenefitAmount);
+	},
+
+	printDiscountedPrice(discountedPrice) {
+		Console.print(TITLE.discounted_price);
+		Console.print(discountedPrice);
 	}
 };
 

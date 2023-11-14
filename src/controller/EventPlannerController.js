@@ -132,7 +132,10 @@ class EventPlannerController {
 		OutputView.printTotalBenefitsAmount(totalBenefitAmount);
 	}
 
-	#displayDiscountedPrice() {}
+	#displayDiscountedPrice() {
+		const discountedPrice = this.#order.readOrderSheet(KEY.discounted_price);
+		OutputView.printDiscountedPrice(discountedPrice);
+	}
 
 	#displayEventBadge() {}
 }
