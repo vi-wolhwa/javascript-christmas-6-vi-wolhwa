@@ -25,6 +25,11 @@ const OutputView = {
 		orderMenus.forEach((menu) => {
 			Console.print(CONTENT.order_menu(menu.name, menu.count));
 		});
+	},
+
+	printTotalPrice(totalPrice) {
+		Console.print(TITLE.total_price);
+		Console.print(CONTENT.total_price(totalPrice));
 	}
 };
 

@@ -107,7 +107,10 @@ class EventPlannerController {
 		OutputView.printOrderMenus(orderMenus);
 	}
 
-	#displayTotalPrice() {}
+	#displayTotalPrice() {
+		const totalPrice = this.#order.readOrderSheet(KEY.total_price);
+		OutputView.printTotalPrice(totalPrice);
+	}
 
 	#displayGiveaways() {}
 
