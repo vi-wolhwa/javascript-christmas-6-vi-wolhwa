@@ -27,7 +27,7 @@ class EventPlannerController {
 		OutputView.printIntroduce();
 	}
 
-	// 사용자입력에 대한 처리를 담당한다.
+	// 사용자 입력을 처리하고, 주문서(OrderSheet)를 작성한다.
 	async #handleUserInput() {
 		const date = await this.#handleDateInput();
 		const order = await this.#handleOrderInput();
@@ -81,9 +81,7 @@ class EventPlannerController {
 		return newOrder;
 	}
 
-	/**
-	 *
-	 */
+	// 가능한 이벤트 혜택을 조회하고, 주문서(OrderSheet)에 내용을 추가한다.
 	#processEventBenefits() {
 		const orderSheet = this.#order.getOrderSheet();
 		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
