@@ -2,7 +2,7 @@ import DeepFreeze from '../util/DeepFreeze';
 
 const NULL = '없음';
 
-const EVENT_BADGE_KEYS = DeepFreeze([star, tree, santa]);
+const EVENT_BADGE_KEYS = DeepFreeze(['star', 'tree', 'santa']);
 
 const EVENT_BADGE_NAME = DeepFreeze({
 	star: '별',
