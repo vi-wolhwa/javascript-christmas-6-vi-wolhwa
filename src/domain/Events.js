@@ -1,5 +1,5 @@
 import EVENT_DATA from '../constant/data/EventData.js';
-import Event from './Event.js-+';
+import Event from './Event.js';
 
 class Events {
 	/** @type {Array<Event>} */
