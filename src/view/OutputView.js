@@ -54,6 +54,11 @@ const OutputView = {
 	printDiscountedPrice(discountedPrice) {
 		Console.print(TITLE.discounted_price);
 		Console.print(discountedPrice);
+	},
+
+	printEventBadge(eventBadge) {
+		Console.print(TITLE.event_badge);
+		Console.print(CONTENT.event_badge(eventBadge));
 	}
 };
 

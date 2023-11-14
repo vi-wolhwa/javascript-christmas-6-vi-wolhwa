@@ -137,7 +137,10 @@ class EventPlannerController {
 		OutputView.printDiscountedPrice(discountedPrice);
 	}
 
-	#displayEventBadge() {}
+	#displayEventBadge() {
+		const eventBadge = this.#order.readOrderSheet(KEY.event_badge);
+		OutputView.printEventBadge(eventBadge);
+	}
 }
 
 export default EventPlannerController;

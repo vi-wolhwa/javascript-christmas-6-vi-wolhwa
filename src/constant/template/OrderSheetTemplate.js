@@ -23,7 +23,8 @@ const ORDER_SHEET = {
 	available_events: [],
 	total_discount: null,
 	total_benefits: null,
-	discounted_price: null
+	discounted_price: null,
+	event_badge: null
 };
 
 const ORDER_SHEET_KEYS = DeepFreeze(extractKeys(ORDER_SHEET));

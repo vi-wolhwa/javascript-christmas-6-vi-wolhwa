@@ -5,6 +5,7 @@ import DeepCopy from './../util/DeepCopy.js';
 import GetDayOfWeek from './../util/GetDayOfWeek.js';
 import DeepFreeze from './../util/DeepFreeze.js';
 import { BENEFIT } from '../constant/template/Templates.js';
+import getEventBadge from '../constant/EventBadges.js';
 
 const DATE = OPTIONS.date;
 const CATEGORY = OPTIONS.menu.category;
@@ -46,6 +47,7 @@ class Order {
 		this.#orderSheet.total_discount ?? (key === KEY.available_events && this.#calculateTotalDiscount(value));
 		this.#orderSheet.total_benefits ?? (key === KEY.total_discount && this.#calculateTotalBenefits(value));
 		this.#orderSheet.discounted_price ?? (key === KEY.total_discount && this.#calculateDiscountedPrice(value));
+		this.#orderSheet.event_badge ?? (key === KEY.total_benefits && this.#calculateEventBadge(value));
 	}
 
 	/**
@@ -117,6 +119,11 @@ class Order {
 	#calculateDiscountedPrice(total_discount) {
 		const discountedPrice = this.readOrderSheet(KEY.total_price) - total_discount;
 		this.writeOrderSheet(KEY.discounted_price, discountedPrice);
+	}
+
+	#calculateEventBadge(total_benefits) {
+		const eventBadge = getEventBadge(total_benefits);
+		this.writeOrderSheet(KEY.event_badge, eventBadge);
 	}
 
 	/**
