@@ -1,4 +1,4 @@
-import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
+import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import OPTIONS from '../constant/Options.js';
 import MENU_DATA from '../constant/data/MenuData.js';
 import DeepCopy from './../util/DeepCopy.js';
