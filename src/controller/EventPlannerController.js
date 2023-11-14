@@ -6,6 +6,7 @@ import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import { MENU } from '../constant/template/Templates.js';
 import Events from './../domain/Events.js';
+import ExceptionHandler from './../error/ExceptionHandler.js';
 
 const Validator = EventPlannerValidator;
 
@@ -30,8 +31,14 @@ class EventPlannerController {
 
 	// 사용자 입력을 처리하고, 주문서(OrderSheet)를 작성한다.
 	async #handleUserInput() {
-		const date = await this.#handleDateInput();
-		const order = await this.#handleOrderInput();
+		const date = await ExceptionHandler.handleAsyncExceptionAndRetry(() => {
+			return this.#handleDateInput();
+		});
+		const order = await ExceptionHandler.handleAsyncExceptionAndRetry(() => {
+			return this.#handleOrderInput();
+		});
+		// const date = await this.#handleDateInput();
+		// const order = await this.#handleOrderInput();
 		this.#order.writeOrderSheet(KEY.date, date);
 		this.#order.writeOrderSheet(KEY.order, order);
 	}
