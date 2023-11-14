@@ -18,6 +18,7 @@ const ORDER_SHEET = {
 	date: null,
 	day_of_week: null,
 	order: [],
+	order_count: [],
 	total_price: null,
 	available_events: [],
 	giveaways: [],
