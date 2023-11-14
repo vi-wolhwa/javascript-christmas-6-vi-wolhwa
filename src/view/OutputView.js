@@ -48,12 +48,12 @@ const OutputView = {
 
 	printTotalBenefitsAmount(totalBenefitAmount) {
 		Console.print(TITLE.total_benefits);
-		Console.print(totalBenefitAmount);
+		Console.print(CONTENT.total_benefits(totalBenefitAmount));
 	},
 
 	printDiscountedPrice(discountedPrice) {
 		Console.print(TITLE.discounted_price);
-		Console.print(discountedPrice);
+		Console.print(CONTENT.discounted_prince(discountedPrice));
 	},
 
 	printEventBadge(eventBadge) {
