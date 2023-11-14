@@ -21,7 +21,6 @@ const ORDER_SHEET = {
 	order_count: [],
 	total_price: null,
 	available_events: [],
-	giveaways: [],
 	total_discount: null,
 	total_benefits: null,
 	discounted_price: null
