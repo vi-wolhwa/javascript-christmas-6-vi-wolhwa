@@ -30,6 +30,20 @@ const OutputView = {
 	printTotalPrice(totalPrice) {
 		Console.print(TITLE.total_price);
 		Console.print(CONTENT.total_price(totalPrice));
+	},
+
+	printGiveaways(giveaways) {
+		Console.print(TITLE.giveaway);
+		giveaways.forEach((giveaway) => {
+			Console.print(CONTENT.giveaway(giveaway.menu.name, giveaway.count));
+		});
+	},
+
+	printBenefitDetails(benefitDetails) {
+		Console.print(TITLE.benefit_details);
+		benefitDetails.forEach((detail) => {
+			Console.print(CONTENT.benefit_details(detail.name, detail.amount));
+		});
 	}
 };
 

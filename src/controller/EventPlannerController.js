@@ -112,9 +112,20 @@ class EventPlannerController {
 		OutputView.printTotalPrice(totalPrice);
 	}
 
-	#displayGiveaways() {}
+	#displayGiveaways() {
+		const giveaways = this.#order.readOrderSheet(KEY.available_events).reduce((giveaways, event) => {
+			return giveaways.concat(event.giveaways);
+		}, []);
+		OutputView.printGiveaways(giveaways);
+	}
 
-	#displayBenefitDetails() {}
+	#displayBenefitDetails() {
+		const benefitDetails = this.#order.readOrderSheet(KEY.available_events).map((event) => {
+			const amount = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, event.discount);
+			return { name: event.name, amount: amount };
+		});
+		OutputView.printBenefitDetails(benefitDetails);
+	}
 
 	#displayTotalBenefitAmount() {}
 
