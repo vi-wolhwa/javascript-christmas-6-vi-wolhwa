@@ -7,6 +7,7 @@ import DeepFreeze from './../util/DeepFreeze.js';
 import { BENEFIT } from '../constant/template/Templates.js';
 
 const DATE = OPTIONS.date;
+const CATEGORY = OPTIONS.menu.category;
 
 class Order {
 	/** @type {ORDER_SHEET} */
@@ -41,6 +42,7 @@ class Order {
 	#autoCalculcate(key, value) {
 		this.#orderSheet.day_of_week ?? (key === KEY.date && this.#calculateDayOfWeek(value));
 		this.#orderSheet.total_price ?? (key === KEY.order && this.#calculateTotalPrice(value));
+		this.#orderSheet.order_count ?? (key === KEY.order && this.#calculateOrderCount(value));
 		this.#orderSheet.total_discount ?? (key === KEY.available_events && this.#calculateTotalDiscount(value));
 		this.#orderSheet.total_benefits ?? (key === KEY.total_discount && this.#calculateTotalBenefits(value));
 		this.#orderSheet.discounted_price ?? (key === KEY.total_discount && this.#calculateDiscountedPrice(value));
@@ -64,6 +66,24 @@ class Order {
 			return totalPrice + MENU_DATA[menu.name].price * menu.count;
 		}, 0);
 		this.writeOrderSheet(KEY.total_discount, totalPrice);
+	}
+
+	/**
+	 * 주문에 대해 메뉴 카테고리 별 주문 수량을 계산하고, 주문서에 작성한다.
+	 * @param {Array<object>} order - 주문 정보 배열 [{name: 메뉴명, count: 개수}, ...]
+	 */
+	#calculateOrderCount(order) {
+		const orderCount = {
+			[CATEGORY.appetizer]: 0,
+			[CATEGORY.main]: 0,
+			[CATEGORY.dessert]: 0,
+			[CATEGORY.beverage]: 0
+		};
+		order.reduce((orderCount, { name, count }) => {
+			orderCount[MENU_DATA[name].category] += count;
+			return orderCount;
+		}, orderCount);
+		this.writeOrderSheet(KEY.order_count, orderCount);
 	}
 
 	/**
