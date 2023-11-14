@@ -104,7 +104,7 @@ class EventPlannerController {
 
 	#displayOrderMenus() {
 		const orderMenus = this.#order.readOrderSheet(KEY.order);
-		OutputView.printOrderMenus();
+		OutputView.printOrderMenus(orderMenus);
 	}
 
 	#displayTotalPrice() {}
