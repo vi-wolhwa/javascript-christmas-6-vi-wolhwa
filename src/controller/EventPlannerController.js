@@ -74,7 +74,7 @@ class EventPlannerController {
 			.filter((menu) => menu !== SIGNS.empty)
 			.map((menu) => {
 				const [name, count] = menu.split(SIGNS.hyphen);
-				name.replace(SIGNS.space, SIGNS.empty);
+				name = name.replace(SIGNS.space, SIGNS.empty);
 				return MENU(name, parseInt(count, 10));
 			});
 		Validator.validateOrder(newOrder);
@@ -102,7 +102,10 @@ class EventPlannerController {
 		this.#displayEventBadge();
 	}
 
-	#displayOrderMenus() {}
+	#displayOrderMenus() {
+		const orderMenus = this.#order.readOrderSheet(KEY.order);
+		OutputView.printOrderMenus();
+	}
 
 	#displayTotalPrice() {}
 
