@@ -4,7 +4,7 @@ import { Console } from '@woowacourse/mission-utils';
 const MSG = GENERAL_MESSAGES;
 
 const OutputView = {
-	/** Introduce 메시지를 출력한다. */
+	// Introduce 메시지를 출력한다.
 	printIntroduce() {
 		Console.print(MSG.greeting.introduce);
 	},
@@ -12,7 +12,7 @@ const OutputView = {
 	printMenu() {
 		Console.print('<주문 메뉴>');
 		// ...
-	}
+	},
 	// ...
 };
 
