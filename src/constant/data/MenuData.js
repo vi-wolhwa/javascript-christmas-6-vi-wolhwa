@@ -1,3 +1,10 @@
+/**
+ * [MenuData, EventData]
+ * 실제 애플리케이션을 개발할 때와 같이 MenuData, EventData를 .JSON raw 데이터로 선언한 후,
+ * Builder 또는 Factory를 선언하여 (Event와 같은) 객체를 생성하고 싶었다.
+ * 시간이 남는다면 진행할 예정
+ */
+
 import OPTIONS from '../Options.js';
 import DeepFreeze from '../../util/DeepFreeze.js';
 
