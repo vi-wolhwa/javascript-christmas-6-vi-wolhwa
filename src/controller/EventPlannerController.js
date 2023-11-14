@@ -5,6 +5,7 @@ import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import { MENU } from '../constant/template/Templates.js';
+import Events from './../domain/Events';
 
 const Validator = EventPlannerValidator;
 
