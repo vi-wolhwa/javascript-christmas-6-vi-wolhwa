@@ -15,6 +15,7 @@ class EventPlannerController {
 	async run() {
 		this.#displayIntroduce();
 		await this.#handleUserInput();
+		this.#processEventBenefits();
 		this.#displayResultHeader();
 		this.#displayResultInOrder();
 	}
@@ -76,6 +77,10 @@ class EventPlannerController {
 			});
 		Validator.validateOrder(newOrder);
 		return newOrder;
+	}
+
+	#processEventBenefits() {
+		const orderSheet = this.#order.getOrderSheet();
 	}
 
 	#displayResultHeader() {}
