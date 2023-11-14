@@ -45,6 +45,11 @@ const OutputView = {
 			Console.print(CONTENT.benefit_details(detail.name, detail.amount));
 		});
 	}
+
+	printTotalBenefitsAmount(totalBenefitAmount) {
+		Console.print(TITLE.total_benefits);
+		Console.print(totalBenefitAmount);
+	}
 };
 
 export default OutputView;
