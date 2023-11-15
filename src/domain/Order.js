@@ -30,7 +30,7 @@ class Order {
 	 * @param {object} updatedItems - 주문서 변경사항
 	 */
 	updateOrderSheet(updatedItems) {
-		this.#orderSheet = Object.assign(this.#orderSheet, updatedItems);
+		this.#orderSheet = { ...this.#orderSheet, ...updatedItems };
 		this.#autoUpdateOrderSheet(updatedItems);
 	}
 
@@ -73,6 +73,7 @@ class Order {
 		const totalPrice = menuOrders.reduce((totalPrice, menu) => {
 			return totalPrice + MenuManager.findPrice(menu.name) * menu.count;
 		}, 0);
+
 		return { [KEY.total_price]: totalPrice };
 	}
 
@@ -88,10 +89,11 @@ class Order {
 			[MENU_OPTIONS.category.dessert]: 0,
 			[MENU_OPTIONS.category.beverage]: 0
 		};
-		menuOrders.reduce((orderCount, { name, count }) => {
+
+		for (const { name, count } of menuOrders) {
 			orderCount[MenuManager.findCategory(name)] += count;
-			return orderCount;
-		}, orderCount);
+		}
+
 		return { [KEY.order_count]: orderCount };
 	}
 
@@ -104,6 +106,7 @@ class Order {
 		const totalDiscount = availablEvents.reduce((totalDiscount, event) => {
 			return totalDiscount + event.discount;
 		}, 0);
+
 		return { [KEY.total_discount]: totalDiscount };
 	}
 
@@ -114,13 +117,14 @@ class Order {
 	 */
 	#calculateTotalBenefitAmount(totalDiscount) {
 		const events = this.#orderSheet.available_events;
-		const totalBenefitAmount = events.reduce((total, event) => {
-			const total_giveaway = event.giveaways.reduce(
-				(total, giveaway) => total + MenuManager.findPrice(giveaway.name),
-				0
-			);
-			return total + total_giveaway;
+
+		const totalBenefitAmount = events.reduce((totalBenefitAmount, event) => {
+			const giveawayValue = event.giveaways.reduce((gaveawayValue, giveaway) => {
+				return gaveawayValue + MenuManager.findPrice(giveaway.name);
+			}, 0);
+			return totalBenefitAmount + giveawayValue;
 		}, totalDiscount);
+
 		return { [KEY.total_benefit_amount]: totalBenefitAmount };
 	}
 
