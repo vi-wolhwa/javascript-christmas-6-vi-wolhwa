@@ -10,8 +10,8 @@ class Events {
 		this.#events = EVENT_DATA.map((eventData) => new Event(eventData));
 	}
 
-	lookupAvailableBenefits(orderSheet) {
-		return this.#events.map((event) => event.lookupAvailableBenefit(orderSheet) ?? []).flat();
+	lookupAvailableEvents(orderSheet) {
+		return this.#events.map((event) => event.lookupAvailableEvent(orderSheet) ?? []).flat();
 	}
 }
 

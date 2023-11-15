@@ -1,4 +1,4 @@
-import { BENEFIT } from '../constant/template/Templates.js';
+import { EVENT_BENEFIT } from '../constant/template/Templates.js';
 
 const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;
 
@@ -17,9 +17,9 @@ class Event {
 		this.#description = eventData.description;
 	}
 
-	lookupAvailableBenefit(orderSheet) {
+	lookupAvailableEvent(orderSheet) {
 		if (this.#isEventTarget(orderSheet)) {
-			return BENEFIT(this.#name, this.#discount(orderSheet), this.#giveaways);
+			return EVENT_BENEFIT(this.#name, this.#discount(orderSheet), this.#giveaways);
 		}
 	}
 

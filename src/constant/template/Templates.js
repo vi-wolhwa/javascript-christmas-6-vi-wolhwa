@@ -7,7 +7,7 @@ const MENU = (name, count) => {
 	});
 };
 
-const BENEFIT = (name, discount, giveaways) => {
+const EVENT_BENEFIT = (name, discount, giveaways) => {
 	return DeepFreeze({
 		name: name,
 		discount: discount,
@@ -15,4 +15,4 @@ const BENEFIT = (name, discount, giveaways) => {
 	});
 };
 
-export { MENU, BENEFIT };
+export { MENU, EVENT_BENEFIT };
