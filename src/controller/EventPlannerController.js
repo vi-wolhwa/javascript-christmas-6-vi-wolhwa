@@ -37,12 +37,8 @@ class EventPlannerController {
 	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴목록 }
 	 */
 	async #handleUserInput() {
-		const visitDay = await ExceptionHandler.retryAsyncWithErrorLogging(() => {
-			return this.#handleVisitDayInput();
-		});
-		const menuOrders = await ExceptionHandler.retryAsyncWithErrorLogging(() => {
-			return this.#handleMenuOrdersInput();
-		});
+		const visitDay = await ExceptionHandler.retryAsyncWithErrorLogging(() => this.#handleVisitDayInput());
+		const menuOrders = await ExceptionHandler.retryAsyncWithErrorLogging(() => this.#handleMenuOrdersInput());
 		return { visitDay, menuOrders };
 	}
 
@@ -149,11 +145,10 @@ class EventPlannerController {
 	}
 
 	#displayBenefitDetails(orderSheet) {
-		const benefitDetails = orderSheet.available_events.map((event) => {
-			const giveawayTotal = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
-			const amount = giveawayTotal + event.discount;
-			return { name: event.name, amount: amount };
-		});
+		const benefitDetails = orderSheet.available_events.map((event) => ({
+			name: event.name,
+			amount: event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0) + event.discount
+		}));
 		OutputView.printBenefitDetails(benefitDetails);
 	}
 
