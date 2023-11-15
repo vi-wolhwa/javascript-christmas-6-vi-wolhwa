@@ -1,10 +1,6 @@
 import PROMPT_MESSAGES from '../constant/string/PromptMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
-/**
- * 사용자 입력을 담당하는 View 모듈
- * @module InputView
- */
 const InputView = {
 	/**
 	 * 프롬프트를 출력하고, 방문일자를 입력받는 합수

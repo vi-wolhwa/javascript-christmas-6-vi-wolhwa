@@ -1,5 +1,4 @@
 import EVENT_DATA from '../constant/data/EventData.js';
-import PrintObject from '../util/PrintObject.js';
 import Event from './Event.js';
 
 class Events {

@@ -3,15 +3,11 @@ import LOOKUP_RESULT_MESSAGES from '../constant/string/LookupResultMessages.js';
 import { Console } from '@woowacourse/mission-utils';
 
 const MESSAGES = {
-	general: GENERAL_MESSAGES,
-	title: LOOKUP_RESULT_MESSAGES.titles,
-	content: LOOKUP_RESULT_MESSAGES.contents
+	GENERAL: GENERAL_MESSAGES,
+	TITLE: LOOKUP_RESULT_MESSAGES.titles,
+	CONTENT: LOOKUP_RESULT_MESSAGES.contents
 };
 
-/**
- * 콘솔 출력을 담당하는 View 모듈
- * @module OutputView
- */
 const OutputView = {
 	newLine() {
 		Console.print('');
@@ -25,7 +21,7 @@ const OutputView = {
 	 * introduce 메시지를 출력하는 함수
 	 */
 	printIntroduce() {
-		Console.print(MESSAGES.general.introduce);
+		Console.print(MESSAGES.GENERAL.introduce);
 	},
 
 	/**
@@ -33,7 +29,7 @@ const OutputView = {
 	 * @param {*} visitDay
 	 */
 	printResultHeader(visitDay) {
-		Console.print(MESSAGES.general.event_preview_f(visitDay));
+		Console.print(MESSAGES.GENERAL.event_preview_f(visitDay));
 	},
 
 	/**
@@ -42,9 +38,9 @@ const OutputView = {
 	 */
 	printOrderMenus(orderMenus) {
 		this.newLine();
-		Console.print(MESSAGES.title.order_menu);
+		Console.print(MESSAGES.TITLE.order_menu);
 		orderMenus.forEach((menu) => {
-			Console.print(MESSAGES.content.order_menu_f(menu.name, menu.count));
+			Console.print(MESSAGES.CONTENT.order_menu_f(menu.name, menu.count));
 		});
 	},
 
@@ -54,8 +50,8 @@ const OutputView = {
 	 */
 	printTotalPrice(totalPrice) {
 		this.newLine();
-		Console.print(MESSAGES.title.total_price);
-		Console.print(MESSAGES.content.total_price_f(totalPrice));
+		Console.print(MESSAGES.TITLE.total_price);
+		Console.print(MESSAGES.CONTENT.total_price_f(totalPrice));
 	},
 
 	/**
@@ -64,14 +60,14 @@ const OutputView = {
 	 */
 	printGiveaways(giveaways) {
 		this.newLine();
-		Console.print(MESSAGES.title.giveaway);
+		Console.print(MESSAGES.TITLE.giveaway);
 
 		if (giveaways.length === 0) {
 			Console.print('없음');
 		}
 
 		giveaways.forEach((giveaway) => {
-			Console.print(MESSAGES.content.giveaway_f(giveaway.menu.name, giveaway.count));
+			Console.print(MESSAGES.CONTENT.giveaway_f(giveaway.menu.name, giveaway.count));
 		});
 	},
 
@@ -81,14 +77,14 @@ const OutputView = {
 	 */
 	printBenefitDetails(availableEvents) {
 		this.newLine();
-		Console.print(MESSAGES.title.available_events);
+		Console.print(MESSAGES.TITLE.available_events);
 
 		if (availableEvents.length === 0) {
 			Console.print('없음');
 		}
 
 		availableEvents.forEach((event) => {
-			Console.print(MESSAGES.content.benefit_details_f(event.name, event.amount));
+			Console.print(MESSAGES.CONTENT.benefit_details_f(event.name, event.amount));
 		});
 	},
 
@@ -98,8 +94,8 @@ const OutputView = {
 	 */
 	printTotalBenefitsAmount(totalBenefitAmount) {
 		this.newLine();
-		Console.print(MESSAGES.title.total_benefit_amount);
-		Console.print(MESSAGES.content.total_benefit_amount_f(totalBenefitAmount));
+		Console.print(MESSAGES.TITLE.total_benefit_amount);
+		Console.print(MESSAGES.CONTENT.total_benefit_amount_f(totalBenefitAmount));
 	},
 
 	/**
@@ -108,8 +104,8 @@ const OutputView = {
 	 */
 	printDiscountedPrice(discountedPrice) {
 		this.newLine();
-		Console.print(MESSAGES.title.discounted_price);
-		Console.print(MESSAGES.content.discounted_price_f(discountedPrice));
+		Console.print(MESSAGES.TITLE.discounted_price);
+		Console.print(MESSAGES.CONTENT.discounted_price_f(discountedPrice));
 	},
 
 	/**
@@ -118,8 +114,8 @@ const OutputView = {
 	 */
 	printEventBadge(eventBadge) {
 		this.newLine();
-		Console.print(MESSAGES.title.event_badge);
-		Console.print(MESSAGES.content.event_badge_f(eventBadge));
+		Console.print(MESSAGES.TITLE.event_badge);
+		Console.print(MESSAGES.CONTENT.event_badge_f(eventBadge));
 	}
 };
 

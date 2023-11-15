@@ -85,7 +85,6 @@ class EventPlannerController {
 		const preprocessMenu = (menuOrder) => {
 			const [name, count] = menuOrder.split(SIGNS.hyphen);
 			return MENU_ORDER(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
-			return MENU_ORDER(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
 		};
 
 		const newMenuOrders = menuOrders

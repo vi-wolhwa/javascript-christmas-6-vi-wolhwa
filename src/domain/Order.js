@@ -3,7 +3,6 @@ import { MENU_OPTIONS, DATE_OPTIONS } from '../constant/Options.js';
 import MENU_DATA from '../constant/data/MenuData.js';
 import DeepCopy from './../util/DeepCopy.js';
 import GetDayOfWeek from './../util/GetDayOfWeek.js';
-import DeepFreeze from './../util/DeepFreeze.js';
 import getEventBadge from '../constant/EventBadges.js';
 
 class Order {
@@ -126,7 +125,7 @@ class Order {
 	 * @returns {ORDER_SHEET} 주문서(OrderSheet) 객체
 	 */
 	getOrderSheetReadOnly() {
-		return DeepFreeze(DeepCopy(this.#orderSheet));
+		return Object.freeze(DeepCopy(this.#orderSheet));
 	}
 }
 

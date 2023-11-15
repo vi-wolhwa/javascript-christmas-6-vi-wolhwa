@@ -1,20 +1,21 @@
-import VisitDayValidation from './eventPlannerValidation/VisitDayValidation.js';
-import MenuNameValidation from './eventPlannerValidation/MenuNameValidation.js';
 import MenuCountValidation from './eventPlannerValidation/MenuCountValidation.js';
+import MenuNameValidation from './eventPlannerValidation/MenuNameValidation.js';
+import VisitDayValidation from './eventPlannerValidation/VisitDayValidation.js';
 
-/** EventPlanner 내에서 유효성검사를 담당하는 Validator */
 const EventPlannerValidator = {
 	/**
-	 * 방문일자(UserInput)에 대하여 유효성검사를 수행한다.
-	 * @param {string} visitDay 방문일자
+	 * 방문 일자에 대하여 유효성 검사를 수행하는 함수
+	 * @param {string} visitDay - 검사할 방문 일자
+	 * @throws {Error} 유효하지 않은 날짜일 경우 에러를 throw
 	 */
 	validateVisitDay(visitDay) {
 		VisitDayValidation.validate(visitDay);
 	},
 
 	/**
-	 * 주문(UserInput)에 대하여 유효성검사를 수행한다.
-	 * @param {Array<object>} menuOrders 메뉴주문목록
+	 * 메뉴 주문에 대하여 유효성 검사를 수행하는 함수
+	 * @param {Object[]} menuOrders - 검사할 메뉴 주문 배열
+	 * @throws {Error} 유효하지 않은 주문일 경우 에러를 throw
 	 */
 	validateMenuOrders(menuOrders) {
 		MenuNameValidation.validate(menuOrders.map((menu) => menu.name));

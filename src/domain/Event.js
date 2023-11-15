@@ -1,7 +1,5 @@
 import { EVENT_BENEFIT } from '../constant/template/Templates.js';
 
-const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;
-
 class Event {
 	#name;
 	#condition;
