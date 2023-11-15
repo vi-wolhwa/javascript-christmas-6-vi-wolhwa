@@ -14,26 +14,33 @@ class EventPlannerController {
 	#order = new Order();
 	#events = new Events();
 
-	// 이벤트 플래너 프로그램을 실행한다.
+	// 이벤트플래너 프로그램을 실행하는 함수
 	async run() {
 		this.#displayIntroduce();
 		const { visitDay, menuOrders } = await this.#handleUserInput();
 		this.#updateOrderSheet({ [KEY.visitDay]: visitDay, [KEY.menuOrders]: menuOrders });
-		this.#lookupEventBenefits();
+		const availableEvents = this.#lookupAvailableEvents();
+		this.#updateOrderSheet({ [KEY.available_events]: availableEvents });
 		this.#displayLookupResult();
 	}
 
+	/**
+	 * 주문서를 업데이트하는 함수
+	 * @param {Array<object>} updatedItems - 업데이트 항목
+	 */
 	#updateOrderSheet(updatedItems) {
 		this.#order.updateOrderSheet(updatedItems);
 	}
 
-	// Introduce 메시지를 출력한다.
+	/**
+	 * Introduce 메시지를 출력하는 함수
+	 */
 	#displayIntroduce() {
 		OutputView.printIntroduce();
 	}
 
 	/**
-	 * 방문날짜, 메뉴주문목록에 대한 입력을 처리하고, 결과를 반환한다.
+	 * 방문날짜, 메뉴주문목록에 대한 입력을 처리하고, 결과를 반환하는 함수
 	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴목록 }
 	 */
 	async #handleUserInput() {
@@ -43,7 +50,7 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 방문날짜에 대한 입력과 전처리를 담당한다.
+	 * 방문날짜에 대한 입력을 처리하고 결과를 반환하는 함수
 	 * @returns {number} 방문날짜
 	 */
 	async #handleVisitDayInput() {
@@ -51,17 +58,17 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 메뉴주문목록에 대한 입력과 전처리를 담당한다.
-	 * @returns {Array<object>} 메뉴주문목록 {메뉴명, 개수}
+	 * 메뉴주문목록에 대한 입력을 처리하고 결과를 반환하는 함수
+	 * @returns {Array<MENU>} 메뉴주문목록
 	 */
 	async #handleMenuOrdersInput() {
 		return this.#preprocessMenuOrders(await InputView.readMenuOrders());
 	}
 
 	/**
-	 * 사용자가 입력한 방문날짜에 대한 전처리를 수행한다.
-	 * @param {Promise<string>} visitDay - 방문날짜(UserInput)
-	 * @returns {number} 방문날짜(Processed)
+	 * 방문날짜(RawData)에 대하여 전처리, 유효성검사를 수행하고 결과를 반환하는 함수
+	 * @param {Promise<string>} visitDay - 방문날짜(RawData)
+	 * @returns {number} 방문날짜
 	 */
 	#preprocessVisitDay(visitDay) {
 		Validator.validateVisitDay(visitDay.trim());
@@ -69,9 +76,10 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 사용자가 입력한 메뉴 주문 목록에 대한 전처리를 수행한다.
-	 * @param {Promise<string>} menuOrders - 메뉴주문목록(UserInput)
-	 * @returns {Array<object>} 메뉴주문목록 {메뉴명, 개수}
+	 * 메뉴주문목록(RawData)에 대하여 전처리, 유효성검사를 수행하고 결과를 반환하는 함수
+	 * @method #preprocessMenuOrders
+	 * @param {Promise<string>} menuOrders - 메뉴주문목록(RawData)
+	 * @returns {Array<MENU>} 메뉴주문목록
 	 */
 	#preprocessMenuOrders(menuOrders) {
 		const preprocessMenu = (menu) => {
@@ -90,14 +98,13 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 가능한 이벤트 혜택을 조회하고, 주문서에 내용을 추가한다.
-	 * @param {number} visitDay
-	 * @param {object} menuOrders
+	 * 참여 가능한 이벤트들의 혜택을 조회하는 함수
+	 * @returns {Array<object>} 참여 가능한 이벤트 혜택 리스트
 	 */
-	#lookupEventBenefits() {
+	#lookupAvailableEvents() {
 		const orderSheet = this.#order.getOrderSheetReadOnly();
-		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
-		this.#order.updateOrderSheet({ [KEY.available_events]: benefits });
+		const availableEvents = this.#events.lookupAvailableEvents(orderSheet);
+		return availableEvents;
 	}
 
 	/**
@@ -110,7 +117,7 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 이벤트 조회 결과의 머리말을 출력하는 함수
+	 * 이벤트 조회 결과의 머리말을 출력하는 함수입니다.
 	 * @param {ORDER_SHEET} orderSheet
 	 */
 	#displayResultHeader(orderSheet) {
@@ -131,19 +138,35 @@ class EventPlannerController {
 		this.#displayEventBadge(orderSheet);
 	}
 
+	/**
+	 * '결과-주문메뉴목록'을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayOrderMenus(orderSheet) {
 		OutputView.printOrderMenus(orderSheet.menuOrders);
 	}
 
+	/**
+	 * '결과-할인 전 총주문 금액'을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayTotalPrice(orderSheet) {
 		OutputView.printTotalPrice(orderSheet.total_price);
 	}
 
+	/**
+	 * '결과-증정 메뉴'를 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayGiveaways(orderSheet) {
 		const giveaways = orderSheet.available_events.flatMap((event) => event.giveaways);
 		OutputView.printGiveaways(giveaways);
 	}
 
+	/**
+	 * '결과-혜택 내역'을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayBenefitDetails(orderSheet) {
 		const benefitDetails = orderSheet.available_events.map((event) => ({
 			name: event.name,
@@ -152,14 +175,26 @@ class EventPlannerController {
 		OutputView.printBenefitDetails(benefitDetails);
 	}
 
+	/**
+	 * '결과-총혜택 금액'을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayTotalBenefitAmount(orderSheet) {
 		OutputView.printTotalBenefitsAmount(orderSheet.total_benefits);
 	}
 
+	/**
+	 * '결과-할인 후 예상 결제 금액'을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayDiscountedPrice(orderSheet) {
 		OutputView.printDiscountedPrice(orderSheet.discounted_price);
 	}
 
+	/**
+	 * '결과-12월 이벤트 배지'를 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
 	#displayEventBadge(orderSheet) {
 		OutputView.printEventBadge(orderSheet.event_badge);
 	}
