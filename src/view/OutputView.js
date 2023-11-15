@@ -12,8 +12,15 @@ const OutputView = {
 	/**
 	 * 빈 라인을 출력하는 함수
 	 */
-	newLine() {
+	printNewLine() {
 		Console.print('');
+	},
+
+	/**
+	 * '없음'을 출력하는 함수
+	 */
+	printNothing() {
+		Console.print(MESSAGES.CONTENT.nothing);
 	},
 
 	/**
@@ -36,7 +43,7 @@ const OutputView = {
 	 * @param {Array<object>} orderMenus - 주문 메뉴 목록
 	 */
 	printOrderMenus(orderMenus) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.order_menu);
 		orderMenus.forEach((menu) => {
 			Console.print(MESSAGES.CONTENT.order_menu_f(menu.name, menu.count));
@@ -48,7 +55,7 @@ const OutputView = {
 	 * @param {number} totalPrice
 	 */
 	printTotalPrice(totalPrice) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.total_price);
 		Console.print(MESSAGES.CONTENT.total_price_f(totalPrice));
 	},
@@ -58,11 +65,11 @@ const OutputView = {
 	 * @param {*} giveaways
 	 */
 	printGiveaways(giveaways) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.giveaway);
 
 		if (giveaways.length === 0) {
-			Console.print(MESSAGES.CONTENT.nothing);
+			this.printNothing();
 			return;
 		}
 
@@ -76,11 +83,11 @@ const OutputView = {
 	 * @param {Array<object>} availableEvents
 	 */
 	printBenefitDetails(availableEvents) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.available_events);
 
 		if (availableEvents.length === 0) {
-			Console.print(MESSAGES.CONTENT.nothing);
+			this.printNothing();
 			return;
 		}
 
@@ -93,8 +100,8 @@ const OutputView = {
 	 * '조회결과: 총혜택 금액'을 출력하는 함수
 	 * @param {number} totalBenefitAmount
 	 */
-	printTotalBenefitsAmount(totalBenefitAmount) {
-		this.newLine();
+	printTotalBenefitAmount(totalBenefitAmount) {
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.total_benefit_amount);
 		Console.print(MESSAGES.CONTENT.total_benefit_amount_f(totalBenefitAmount));
 	},
@@ -104,7 +111,7 @@ const OutputView = {
 	 * @param {number} discountedPrice
 	 */
 	printDiscountedPrice(discountedPrice) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.discounted_price);
 		Console.print(MESSAGES.CONTENT.discounted_price_f(discountedPrice));
 	},
@@ -114,8 +121,14 @@ const OutputView = {
 	 * @param {string} eventBadge
 	 */
 	printEventBadge(eventBadge) {
-		this.newLine();
+		this.printNewLine();
 		Console.print(MESSAGES.TITLE.event_badge);
+
+		if (eventBadge === '') {
+			this.printNothing();
+			return;
+		}
+
 		Console.print(MESSAGES.CONTENT.event_badge_f(eventBadge));
 	}
 };

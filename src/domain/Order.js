@@ -1,9 +1,8 @@
-import MENU_DATA from '../constant/data/MenuData.js';
+import MENU_DATA from '../data/MenuData.js';
 import { MENU_OPTIONS, DATE_OPTIONS } from '../constant/Options.js';
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 import DeepCopy from '../util/DeepCopy.js';
 import GetDayOfWeek from '../util/GetDayOfWeek.js';
-import getEventBadge from '../constant/data/EventBadge.js';
 
 class Order {
 	/** @type {ORDER_SHEET} */
@@ -19,9 +18,11 @@ class Order {
 		},
 		[KEY.available_events]: (availableEvents) => this.#calculateTotalDiscount(availableEvents),
 		[KEY.total_discount]: (totalDiscount) => {
-			return Object.assign(this.#calculateTotalBenefits(totalDiscount), this.#calculateDiscountedPrice(totalDiscount));
-		},
-		[KEY.total_benefits]: (totalBenefits) => this.#calculateEventBadge(totalBenefits)
+			return Object.assign(
+				this.#calculateTotalBenefitAmount(totalDiscount),
+				this.#calculateDiscountedPrice(totalDiscount)
+			);
+		}
 	});
 
 	/**
@@ -109,15 +110,15 @@ class Order {
 	/**
 	 * '총 할인 금액'으로부터 '총 혜택 금액'을 계산하여 주문서 Key로 반환하는 함수
 	 * @param {number} totalDiscount - 총 할인 금액
-	 * @returns {object} { total_benefits: 총 혜택 금액 }
+	 * @returns {object} { total_benefit_amount: 총 혜택 금액 }
 	 */
-	#calculateTotalBenefits(totalDiscount) {
+	#calculateTotalBenefitAmount(totalDiscount) {
 		const events = this.#orderSheet.available_events;
-		const totalBenefits = events.reduce((total, event) => {
+		const totalBenefitAmount = events.reduce((total, event) => {
 			const total_giveaway = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
 			return total + total_giveaway;
 		}, totalDiscount);
-		return { [KEY.total_benefits]: totalBenefits };
+		return { [KEY.total_benefit_amount]: totalBenefitAmount };
 	}
 
 	/**
@@ -128,16 +129,6 @@ class Order {
 	#calculateDiscountedPrice(totalDiscount) {
 		const discountedPrice = this.#orderSheet.total_price - totalDiscount;
 		return { [KEY.discounted_price]: discountedPrice };
-	}
-
-	/**
-	 * '총 혜택 금액'으로부터 '이벤트 뱃지'를 계산하여 주문서 Key로 반환하는 함수
-	 * @param {number} totalBenefits - 총 혜택 금액
-	 * @returns {object} { event_badge: 이벤트 뱃지 }
-	 */
-	#calculateEventBadge(totalBenefits) {
-		const eventBadge = getEventBadge(totalBenefits);
-		return { [KEY.event_badge]: eventBadge };
 	}
 
 	/**

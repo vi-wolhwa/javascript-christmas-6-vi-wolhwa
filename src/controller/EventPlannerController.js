@@ -1,7 +1,7 @@
 import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 import Order from '../domain/Order.js';
-import Events from '../domain/Events.js';
+import EventManager from '../domain/EventManager.js';
 import ExceptionHandler from '../error/ExceptionHandler.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import InputView from '../view/InputView.js';
@@ -11,15 +11,14 @@ const Validator = EventPlannerValidator;
 
 class EventPlannerController {
 	#order = new Order();
-	#events = new Events();
+	#eventManager = new EventManager();
 
 	// 이벤트플래너 프로그램을 실행하는 함수
 	async run() {
 		this.#displayIntroduce();
-		const { visitDay, menuOrders } = await this.#handleUserInput();
-		this.#updateOrderSheet({ [KEY.visitDay]: visitDay, [KEY.menuOrders]: menuOrders });
-		const availableEvents = this.#lookupAvailableEvents();
-		this.#updateOrderSheet({ [KEY.available_events]: availableEvents });
+		await this.#handleUserInput();
+		this.#lookupAvailableEvents();
+		this.#lookupEventBadge();
 		this.#displayLookupResult();
 	}
 
@@ -39,13 +38,12 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 방문날짜, 메뉴주문에 대한 입력을 처리하고, 결과를 반환하는 함수
-	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴 리스트 }
+	 * 방문날짜, 메뉴주문에 대한 입력을 처리하고, 주문서에 작성하는 함수
 	 */
 	async #handleUserInput() {
 		const visitDay = await ExceptionHandler.retryAsyncWithErrorLogging(() => this.#handleVisitDayInput());
 		const menuOrders = await ExceptionHandler.retryAsyncWithErrorLogging(() => this.#handleMenuOrdersInput());
-		return { visitDay, menuOrders };
+		this.#updateOrderSheet({ [KEY.visitDay]: visitDay, [KEY.menuOrders]: menuOrders });
 	}
 
 	/**
@@ -98,13 +96,21 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 참여 가능한 이벤트들의 혜택을 조회하는 함수
-	 * @returns {Array<object>} 참여 가능한 이벤트 혜택 리스트
+	 * 참여 가능한 이벤트들의 혜택을 조회하고 주문서에 작성하는 함수
 	 */
 	#lookupAvailableEvents() {
 		const orderSheet = this.#order.getOrderSheetReadOnly();
-		const availableEvents = this.#events.lookupAvailableEvents(orderSheet);
-		return availableEvents;
+		const availableEvents = this.#eventManager.lookupAvailableEvents(orderSheet);
+		this.#updateOrderSheet({ [KEY.available_events]: availableEvents });
+	}
+
+	/**
+	 * 혜택 금액에 따른 이벤트 뱃지의 조회하고 주문서에 작성하는 함수
+	 */
+	#lookupEventBadge() {
+		const orderSheet = this.#order.getOrderSheetReadOnly();
+		const eventBadge = this.#eventManager.lookupEventBadge(orderSheet);
+		this.#updateOrderSheet({ [KEY.event_badge]: eventBadge });
 	}
 
 	/**
@@ -180,7 +186,7 @@ class EventPlannerController {
 	 * @param {ORDER_SHEET} orderSheet
 	 */
 	#displayTotalBenefitAmount(orderSheet) {
-		OutputView.printTotalBenefitsAmount(orderSheet.total_benefit_amount);
+		OutputView.printTotalBenefitAmount(orderSheet.total_benefit_amount);
 	}
 
 	/**
