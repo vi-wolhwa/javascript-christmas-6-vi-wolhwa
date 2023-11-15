@@ -1,6 +1,6 @@
-import MENU_DATA from '../../data/MenuData.js';
 import { MENU_OPTIONS, ORDER_OPTIONS } from '../../constant/Options.js';
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
+import MenuManager from './../../domain/MenuFinder';
 
 const MenuOrderValidation = {
 	/**
@@ -20,7 +20,7 @@ const MenuOrderValidation = {
 	 * @throws {Error} 모든 주문 메뉴가 음료인 경우 에러 발생
 	 */
 	checkIsNotBeverageOnly(names) {
-		if (names.every((name) => MENU_DATA[name].category === MENU_OPTIONS.category.beverage)) {
+		if (names.every((name) => MenuManager.findCategory(name) === MENU_OPTIONS.category.beverage)) {
 			throw new Error(ERROR_MESSAGES.exceeded_max_order);
 		}
 	},

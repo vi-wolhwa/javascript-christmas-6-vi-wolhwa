@@ -6,6 +6,7 @@ import ExceptionHandler from '../error/ExceptionHandler.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
+import MenuManager from './../domain/MenuFinder';
 
 const Validator = EventPlannerValidator;
 
@@ -176,7 +177,8 @@ class EventPlannerController {
 	#displayBenefitDetails(orderSheet) {
 		const benefitDetails = orderSheet.available_events.map((event) => ({
 			name: event.name,
-			amount: event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0) + event.discount
+			amount:
+				event.giveaways.reduce((total, giveaway) => total + MenuManager.findPrice(giveaway.name), 0) + event.discount
 		}));
 		OutputView.printBenefitDetails(benefitDetails);
 	}

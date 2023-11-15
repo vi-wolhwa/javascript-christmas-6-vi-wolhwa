@@ -1,5 +1,5 @@
-import MENU_DATA from '../../data/MenuData.js';
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
+import MenuManager from '../../domain/MenuFinder.js';
 
 const MenuNameValidation = {
 	/**
@@ -29,7 +29,7 @@ const MenuNameValidation = {
 	 * @throws {Error} MENU_DATA에 존재하지 않는 메뉴 이름인 경우 에러 발생
 	 */
 	checkInMenuData(names) {
-		if (!names.every((name) => Object.keys(MENU_DATA).includes(name))) {
+		if (!names.every((name) => MenuManager.isMenuExist(name))) {
 			throw new Error(ERROR_MESSAGES.invalid_order);
 		}
 	}

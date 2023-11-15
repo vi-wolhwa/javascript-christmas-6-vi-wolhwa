@@ -12,7 +12,6 @@
  */
 
 import { MENU_OPTIONS, EVENT_OPTIONS } from '../constant/Options.js';
-import MENU_DATA from '../data/MenuData.js';
 
 const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;
 
@@ -49,7 +48,7 @@ const EVENT_DATA = Object.freeze([
 		name: '증정 이벤트',
 		condition: (orderSheet) => orderSheet.total_price >= 120000 && commonCondition(orderSheet),
 		discount: () => 0,
-		giveaways: [{ menu: MENU_DATA['샴페인'], count: 1 }],
+		giveaways: [{ name: '샴페인', count: 1 }],
 		description: '할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정'
 	})
 ]);

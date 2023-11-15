@@ -74,7 +74,7 @@ const OutputView = {
 		}
 
 		giveaways.forEach((giveaway) => {
-			Console.print(MESSAGES.CONTENT.giveaway_f(giveaway.menu.name, giveaway.count));
+			Console.print(MESSAGES.CONTENT.giveaway_f(giveaway.name, giveaway.count));
 		});
 	},
 

@@ -1,8 +1,8 @@
-import MENU_DATA from '../data/MenuData.js';
 import { MENU_OPTIONS, DATE_OPTIONS } from '../constant/Options.js';
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 import DeepCopy from '../util/DeepCopy.js';
 import GetDayOfWeek from '../util/GetDayOfWeek.js';
+import MenuManager from './MenuFinder';
 
 class Order {
 	/** @type {ORDER_SHEET} */
@@ -71,7 +71,7 @@ class Order {
 	 */
 	#calculateTotalPrice(menuOrders) {
 		const totalPrice = menuOrders.reduce((totalPrice, menu) => {
-			return totalPrice + MENU_DATA[menu.name].price * menu.count;
+			return totalPrice + MenuManager.findPrice(menu.name) * menu.count;
 		}, 0);
 		return { [KEY.total_price]: totalPrice };
 	}
@@ -89,7 +89,7 @@ class Order {
 			[MENU_OPTIONS.category.beverage]: 0
 		};
 		menuOrders.reduce((orderCount, { name, count }) => {
-			orderCount[MENU_DATA[name].category] += count;
+			orderCount[MenuManager.findCategory(name)] += count;
 			return orderCount;
 		}, orderCount);
 		return { [KEY.order_count]: orderCount };
@@ -115,7 +115,10 @@ class Order {
 	#calculateTotalBenefitAmount(totalDiscount) {
 		const events = this.#orderSheet.available_events;
 		const totalBenefitAmount = events.reduce((total, event) => {
-			const total_giveaway = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
+			const total_giveaway = event.giveaways.reduce(
+				(total, giveaway) => total + MenuManager.findPrice(giveaway.name),
+				0
+			);
 			return total + total_giveaway;
 		}, totalDiscount);
 		return { [KEY.total_benefit_amount]: totalBenefitAmount };
