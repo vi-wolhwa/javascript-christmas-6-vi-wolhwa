@@ -18,9 +18,14 @@ class EventPlannerController {
 	async run() {
 		this.#displayIntroduce();
 		const { visitDay, menuOrders } = await this.#handleUserInput();
-		this.#processLookupEvents(visitDay, menuOrders);
+		this.#updateOrderSheet({ [KEY.visitDay]: visitDay, [KEY.menuOrders]: menuOrders });
+		this.#lookupEventBenefits();
 		this.#displayResultHeader();
 		this.#displayResultInOrder();
+	}
+
+	#updateOrderSheet(updatedItems) {
+		this.#order.updateOrderSheet(updatedItems);
 	}
 
 	// Introduce 메시지를 출력한다.
@@ -94,12 +99,10 @@ class EventPlannerController {
 	 * @param {number} visitDay
 	 * @param {object} menuOrders
 	 */
-	#processLookupEvents(visitDay, menuOrders) {
-		this.#order.writeOrderSheet(KEY.visitDay, visitDay);
-		this.#order.writeOrderSheet(KEY.menuOrders, menuOrders);
+	#lookupEventBenefits() {
 		const orderSheet = this.#order.getOrderSheet();
 		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
-		this.#order.writeOrderSheet(KEY.available_events, benefits);
+		this.#order.updateOrderSheet({ [KEY.available_events]: benefits });
 	}
 
 	#displayResultHeader() {

@@ -6,6 +6,7 @@ import GetDayOfWeek from './../util/GetDayOfWeek.js';
 import DeepFreeze from './../util/DeepFreeze.js';
 import { BENEFIT } from '../constant/template/Templates.js';
 import getEventBadge from '../constant/EventBadges.js';
+import PrintObject from '../util/PrintObject.js';
 
 const DATE = OPTIONS.date;
 const CATEGORY = OPTIONS.menu.category;
@@ -14,15 +15,44 @@ class Order {
 	/** @type {ORDER_SHEET} */
 	#orderSheet = DeepCopy(ORDER_SHEET);
 
+	#autoUpdateByKey = {
+		[KEY.visitDay]: (visitDay) => this.#calculateDayOfWeek(visitDay),
+		[KEY.menuOrders]: (menuOrders) => {
+			return Object.assign(this.#calculateTotalPrice(menuOrders), this.#calculateOrderCount(menuOrders));
+		},
+		[KEY.available_events]: (availableEvents) => this.#calculateTotalDiscount(availableEvents),
+		[KEY.total_discount]: (totalDiscount) => {
+			return Object.assign(this.#calculateTotalBenefits(totalDiscount), this.#calculateDiscountedPrice(totalDiscount));
+		},
+		[KEY.total_benefits]: (totalBenefits) => this.#calculateEventBadge(totalBenefits)
+	};
+
 	/**
-	 * 주문서(OrderSheet)에 데이터를 작성한다.
-	 * @param {string} key - OrderSheet의 Key
-	 * @param {*} value - 작성할 데이터
+	 * 변경사항을 주문서에 반영하는 함수
+	 * @param {object} updatedItems - 주문서 변경사항
 	 */
-	writeOrderSheet(key, value) {
-		//TODO: try-catch
-		this.#orderSheet[key] = value;
-		this.#autoCalculcate(key, value);
+	updateOrderSheet(updatedItems) {
+		this.#orderSheet = Object.assign(this.#orderSheet, updatedItems);
+		this.#autoUpdateOrderSheet(updatedItems);
+	}
+	/**
+	 * 업데이트된 주문서에서 추가로 계산 가능한 항목을 자동으로 업데이트 하는 함수
+	 * @param {object} updatedItems - 주문서 변경사항
+	 */
+	#autoUpdateOrderSheet(updatedItems) {
+		const newUpdatedItems = {};
+
+		Object.keys(updatedItems).forEach((key) => {
+			const autoUpdateFunc = this.#autoUpdateByKey[key]?.(this.readOrderSheet(KEY[key]));
+
+			if (autoUpdateFunc) {
+				Object.assign(newUpdatedItems, autoUpdateFunc);
+			}
+		});
+
+		if (Object.keys(newUpdatedItems).length > 0) {
+			this.updateOrderSheet(newUpdatedItems);
+		}
 	}
 
 	/**
@@ -35,95 +65,73 @@ class Order {
 	}
 
 	/**
-	 * 주문서를 작성할 떄마다, 계산 가능한 항목에 대한 처리를 수횅한다.
-	 * ex) 주문서의 요일이 아직 null이고, 날짜를 입력받았다면, 요일을 계산하여 주문서에 작성한다.
-	 * @param {string} key - OrderSheet에 작성한 Key
-	 * @param {*} value - OrderSheet에 작성한 데이터
-	 */
-	#autoCalculcate(key, value) {
-		this.#orderSheet.day_of_week ?? (key === KEY.visitDay && this.#calculateDayOfWeek(value));
-		this.#orderSheet.total_price ?? (key === KEY.menuOrders && this.#calculateTotalPrice(value));
-		this.#orderSheet.order_count ?? (key === KEY.menuOrders && this.#calculateOrderCount(value));
-		this.#orderSheet.total_discount ?? (key === KEY.available_events && this.#calculateTotalDiscount(value));
-		this.#orderSheet.total_benefits ?? (key === KEY.total_discount && this.#calculateTotalBenefits(value));
-		this.#orderSheet.discounted_price ?? (key === KEY.total_discount && this.#calculateDiscountedPrice(value));
-		this.#orderSheet.event_badge ?? (key === KEY.total_benefits && this.#calculateEventBadge(value));
-	}
-
-	/**
 	 * 방문 날짜에 해당하는 요일을 계산하고, 주문서에 작성한다.
-	 * @param {number} date - 방문 날짜
 	 */
-	#calculateDayOfWeek(date) {
-		const dayOfWeek = GetDayOfWeek(DATE.year, DATE.month, date);
-		this.writeOrderSheet(KEY.day_of_week, dayOfWeek);
+	#calculateDayOfWeek(visitDay) {
+		const dayOfWeek = GetDayOfWeek(DATE.year, DATE.month, visitDay);
+		return { [KEY.day_of_week]: dayOfWeek };
 	}
 
 	/**
 	 * 주문에 대한 총 주문금액을 계산하고, 주문서에 작성한다.
-	 * @param {Array<object>} order - 주문 정보 배열 [{name: 메뉴명, count: 개수}, ...]
 	 */
-	#calculateTotalPrice(order) {
-		const totalPrice = order.reduce((totalPrice, menu) => {
+	#calculateTotalPrice(menuOrders) {
+		const totalPrice = menuOrders.reduce((totalPrice, menu) => {
 			return totalPrice + MENU_DATA[menu.name].price * menu.count;
 		}, 0);
-		this.writeOrderSheet(KEY.total_price, totalPrice);
+		return { [KEY.total_price]: totalPrice };
 	}
 
 	/**
 	 * 주문에 대해 메뉴 카테고리 별 주문 수량을 계산하고, 주문서에 작성한다.
-	 * @param {Array<object>} order - 주문 정보 배열 [{name: 메뉴명, count: 개수}, ...]
 	 */
-	#calculateOrderCount(order) {
+	#calculateOrderCount(menuOrders) {
 		const orderCount = {
 			[CATEGORY.appetizer]: 0,
 			[CATEGORY.main]: 0,
 			[CATEGORY.dessert]: 0,
 			[CATEGORY.beverage]: 0
 		};
-		order.reduce((orderCount, { name, count }) => {
+		menuOrders.reduce((orderCount, { name, count }) => {
 			orderCount[MENU_DATA[name].category] += count;
 			return orderCount;
 		}, orderCount);
-		this.writeOrderSheet(KEY.order_count, orderCount);
+		return { [KEY.order_count]: orderCount };
 	}
 
 	/**
 	 * 총 할인 금액을 계산하고, 주문서에 작성한다.
-	 * @param {Array<BENEFIT>} events - 적용 가능한 이벤트 목록
 	 */
-	#calculateTotalDiscount(events) {
-		const totalDiscount = events.reduce((totalDiscount, event) => {
+	#calculateTotalDiscount(availablEvents) {
+		const totalDiscount = availablEvents.reduce((totalDiscount, event) => {
 			return totalDiscount + event.discount;
 		}, 0);
-		this.writeOrderSheet(KEY.total_discount, totalDiscount);
+		return { [KEY.total_discount]: totalDiscount };
 	}
 
 	/**
 	 * 총 혜택 금액을 계산하고, 주문서에 작성한다.
-	 * @param {number} total_discount
 	 */
-	#calculateTotalBenefits(total_discount) {
+	#calculateTotalBenefits(totalDiscount) {
 		const events = this.readOrderSheet(KEY.available_events);
 		const totalBenefits = events.reduce((total, event) => {
 			const total_giveaway = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
 			return total + total_giveaway;
-		}, total_discount);
-		this.writeOrderSheet(KEY.total_benefits, totalBenefits);
+		}, totalDiscount);
+		return { [KEY.total_benefits]: totalBenefits };
 	}
 
 	/**
 	 * 최종 결제 금액을 계산하고, 주문서에 작성한다.
-	 * @param {number} total_discount - 총 할인 금액
 	 */
-	#calculateDiscountedPrice(total_discount) {
-		const discountedPrice = this.readOrderSheet(KEY.total_price) - total_discount;
-		this.writeOrderSheet(KEY.discounted_price, discountedPrice);
+	#calculateDiscountedPrice(totalDiscount) {
+		const discountedPrice = this.readOrderSheet(KEY.total_price) - totalDiscount;
+		return { [KEY.discounted_price]: discountedPrice };
 	}
 
-	#calculateEventBadge(total_benefits) {
-		const eventBadge = getEventBadge(total_benefits);
-		this.writeOrderSheet(KEY.event_badge, eventBadge);
+	#calculateEventBadge(totalBenefits) {
+		const eventBadge = getEventBadge(totalBenefits);
+		return { [KEY.event_badge]: eventBadge };
 	}
 
 	/**

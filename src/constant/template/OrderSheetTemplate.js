@@ -4,12 +4,17 @@
  * key 파라미터에는 ORDER_SHEET_KEYS를 참조하여 입력한다.
  */
 
-// 객체의 key를 추출하여 object{ key1: 'key1', ... }를 반환한다.
-const extractKeys = (sourceObject) => {
-	return Object.keys(sourceObject).reduce((result, key) => {
-		result[key] = key;
-		return result;
-	}, {});
+const ORDER_SHEET_KEYS = {
+	visitDay: 'visitDay',
+	day_of_week: 'day_of_week',
+	menuOrders: 'menuOrders',
+	order_count: 'order_count',
+	total_price: 'total_price',
+	available_events: 'available_events',
+	total_discount: 'total_discount',
+	total_benefits: 'total_benefits',
+	discounted_price: 'discounted_price',
+	event_badge: 'event_badge'
 };
 
 const ORDER_SHEET = {
@@ -24,7 +29,5 @@ const ORDER_SHEET = {
 	discounted_price: null,
 	event_badge: null
 };
-
-const ORDER_SHEET_KEYS = Object.freeze(extractKeys(ORDER_SHEET));
 
 export { ORDER_SHEET, ORDER_SHEET_KEYS };
