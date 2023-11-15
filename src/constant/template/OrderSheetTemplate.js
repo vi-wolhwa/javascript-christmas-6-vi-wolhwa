@@ -12,7 +12,7 @@ const ORDER_SHEET_KEYS = {
 	total_price: 'total_price',
 	available_events: 'available_events',
 	total_discount: 'total_discount',
-	total_benefits: 'total_benefits',
+	total_benefit_amount: 'total_benefit_amount',
 	discounted_price: 'discounted_price',
 	event_badge: 'event_badge'
 };
@@ -25,7 +25,7 @@ const ORDER_SHEET = {
 	total_price: null,
 	available_events: [],
 	total_discount: null,
-	total_benefits: null,
+	total_benefit_amount: null,
 	discounted_price: null,
 	event_badge: null
 };

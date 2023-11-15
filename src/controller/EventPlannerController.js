@@ -40,8 +40,8 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 방문날짜, 메뉴주문목록에 대한 입력을 처리하고, 결과를 반환하는 함수
-	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴목록 }
+	 * 방문날짜, 메뉴주문에 대한 입력을 처리하고, 결과를 반환하는 함수
+	 * @returns {object} { visitDay: 방문날짜, menuOrders: 주문메뉴 리스트 }
 	 */
 	async #handleUserInput() {
 		const visitDay = await ExceptionHandler.retryAsyncWithErrorLogging(() => this.#handleVisitDayInput());
@@ -58,8 +58,8 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 메뉴주문목록에 대한 입력을 처리하고 결과를 반환하는 함수
-	 * @returns {Array<MENU>} 메뉴주문목록
+	 * 메뉴주문에 대한 입력을 처리하고 결과를 반환하는 함수
+	 * @returns {Array<MENU>} 주문메뉴 리스트
 	 */
 	async #handleMenuOrdersInput() {
 		return this.#preprocessMenuOrders(await InputView.readMenuOrders());
@@ -76,10 +76,10 @@ class EventPlannerController {
 	}
 
 	/**
-	 * 메뉴주문목록(RawData)에 대하여 전처리, 유효성검사를 수행하고 결과를 반환하는 함수
+	 * 메뉴주문(RawData)에 대하여 전처리, 유효성검사를 수행하고 결과를 반환하는 함수
 	 * @method #preprocessMenuOrders
-	 * @param {Promise<string>} menuOrders - 메뉴주문목록(RawData)
-	 * @returns {Array<MENU>} 메뉴주문목록
+	 * @param {Promise<string>} menuOrders - 메뉴주문(RawData)
+	 * @returns {Array<MENU>} 주문 메뉴 리스트
 	 */
 	#preprocessMenuOrders(menuOrders) {
 		const preprocessMenu = (menu) => {
@@ -139,7 +139,7 @@ class EventPlannerController {
 	}
 
 	/**
-	 * '결과-주문메뉴목록'을 출력하는 함수
+	 * '결과-주문 메뉴'을 출력하는 함수
 	 * @param {ORDER_SHEET} orderSheet
 	 */
 	#displayOrderMenus(orderSheet) {
@@ -180,7 +180,7 @@ class EventPlannerController {
 	 * @param {ORDER_SHEET} orderSheet
 	 */
 	#displayTotalBenefitAmount(orderSheet) {
-		OutputView.printTotalBenefitsAmount(orderSheet.total_benefits);
+		OutputView.printTotalBenefitsAmount(orderSheet.total_benefit_amount);
 	}
 
 	/**
