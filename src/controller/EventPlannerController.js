@@ -1,9 +1,8 @@
 import SIGNS from '../constant/string/Signs.js';
-import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
-import { MENU_ORDER, EVENT_BENEFIT } from '../constant/template/Templates.js';
+import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 import Order from '../domain/Order.js';
-import Events from './../domain/Events.js';
-import ExceptionHandler from './../error/ExceptionHandler.js';
+import Events from '../domain/Events.js';
+import ExceptionHandler from '../error/ExceptionHandler.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
@@ -84,7 +83,7 @@ class EventPlannerController {
 	#preprocessMenuOrders(menuOrders) {
 		const preprocessMenu = (menuOrder) => {
 			const [name, count] = menuOrder.split(SIGNS.hyphen);
-			return MENU_ORDER(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
+			return { name: name.replace(SIGNS.space, SIGNS.empty), count: parseInt(count, 10) };
 		};
 
 		const newMenuOrders = menuOrders
@@ -100,7 +99,7 @@ class EventPlannerController {
 
 	/**
 	 * 참여 가능한 이벤트들의 혜택을 조회하는 함수
-	 * @returns {Array<EVENT_BENEFIT>} 참여 가능한 이벤트 혜택 리스트
+	 * @returns {Array<object>} 참여 가능한 이벤트 혜택 리스트
 	 */
 	#lookupAvailableEvents() {
 		const orderSheet = this.#order.getOrderSheetReadOnly();

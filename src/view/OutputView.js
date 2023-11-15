@@ -9,12 +9,11 @@ const MESSAGES = {
 };
 
 const OutputView = {
+	/**
+	 * 빈 라인을 출력하는 함수
+	 */
 	newLine() {
 		Console.print('');
-	},
-
-	print(message) {
-		Console.print(message);
 	},
 
 	/**

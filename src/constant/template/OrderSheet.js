@@ -1,9 +1,3 @@
-/**
- * [ORDER_SHEET_KEYS]
- * Order.js에서 writeOrderSheet(key, value)를 수행할 때 사용된다.
- * key 파라미터에는 ORDER_SHEET_KEYS를 참조하여 입력한다.
- */
-
 const ORDER_SHEET_KEYS = {
 	visitDay: 'visitDay',
 	day_of_week: 'day_of_week',
