@@ -9,7 +9,10 @@ class Order {
 	/** @type {ORDER_SHEET} */
 	#orderSheet = DeepCopy(ORDER_SHEET);
 
-	#autoUpdateByKey = {
+	/**
+	 * 주문서 자동 업데이트 수행 조건
+	 */
+	#autoUpdateByKey = Object.freeze({
 		[KEY.visitDay]: (visitDay) => this.#calculateDayOfWeek(visitDay),
 		[KEY.menuOrders]: (menuOrders) => {
 			return Object.assign(this.#calculateTotalPrice(menuOrders), this.#calculateOrderCount(menuOrders));
@@ -19,7 +22,7 @@ class Order {
 			return Object.assign(this.#calculateTotalBenefits(totalDiscount), this.#calculateDiscountedPrice(totalDiscount));
 		},
 		[KEY.total_benefits]: (totalBenefits) => this.#calculateEventBadge(totalBenefits)
-	};
+	});
 
 	/**
 	 * 변경사항을 주문서에 반영하는 함수
@@ -31,7 +34,7 @@ class Order {
 	}
 
 	/**
-	 * 업데이트된 주문서에서 추가로 계산 가능한 항목을 자동으로 업데이트 하는 함수
+	 * 자동 업데이트 조건을 확인하고, 주문서를 업데이트 하는 함수
 	 * @param {object} updatedItems - 주문서 변경사항
 	 */
 	#autoUpdateOrderSheet(updatedItems) {
@@ -51,7 +54,9 @@ class Order {
 	}
 
 	/**
-	 * 방문 날짜에 해당하는 요일을 계산하고, 주문서에 작성한다.
+	 * 방문 날짜로부터 요일을 계산하여 주문서 Key로 반환하는 함수
+	 * @param {number} visitDay - 방문 날짜
+	 * @returns {object} { day_of_week: 요일 }
 	 */
 	#calculateDayOfWeek(visitDay) {
 		const dayOfWeek = GetDayOfWeek(DATE_OPTIONS.year, DATE_OPTIONS.month, visitDay);
@@ -59,7 +64,9 @@ class Order {
 	}
 
 	/**
-	 * 주문에 대한 총 주문금액을 계산하고, 주문서에 작성한다.
+	 * 메뉴주문목록으로부터 총 가격을 계산하여 주문서 Key 반환하는 함수
+	 * @param {Array<object>} menuOrders - 메뉴주문목록
+	 * @returns {object} { total_price: 총 가격 }
 	 */
 	#calculateTotalPrice(menuOrders) {
 		const totalPrice = menuOrders.reduce((totalPrice, menu) => {
@@ -69,7 +76,9 @@ class Order {
 	}
 
 	/**
-	 * 주문에 대해 메뉴 카테고리 별 주문 수량을 계산하고, 주문서에 작성한다.
+	 * '메뉴주문목록'으로부터 '주문 수량'을 계산하여 주문서 Key로 반환하는 함수
+	 * @param {Array<object>} menuOrders - 메뉴주문목록
+	 * @returns {object} { order_count: 주문 수량 객체 }
 	 */
 	#calculateOrderCount(menuOrders) {
 		const orderCount = {
@@ -86,7 +95,9 @@ class Order {
 	}
 
 	/**
-	 * 총 할인 금액을 계산하고, 주문서에 작성한다.
+	 * '참여 대상 이벤트'로부터 '총 할인 금액'을 계산하여 주문서 Key로 반환하는 함수
+	 * @param {Array<object>} availablEvents - 참여 대상 이벤트
+	 * @returns {object} { total_discount: 총 할인 금액 }
 	 */
 	#calculateTotalDiscount(availablEvents) {
 		const totalDiscount = availablEvents.reduce((totalDiscount, event) => {
@@ -96,7 +107,9 @@ class Order {
 	}
 
 	/**
-	 * 총 혜택 금액을 계산하고, 주문서에 작성한다.
+	 * '총 할인 금액'으로부터 '총 혜택 금액'을 계산하여 주문서 Key로 반환하는 함수
+	 * @param {number} totalDiscount - 총 할인 금액
+	 * @returns {object} { total_benefits: 총 혜택 금액 }
 	 */
 	#calculateTotalBenefits(totalDiscount) {
 		const events = this.#orderSheet.available_events;
@@ -108,20 +121,27 @@ class Order {
 	}
 
 	/**
-	 * 최종 결제 금액을 계산하고, 주문서에 작성한다.
+	 * '총 할인 금액'으로부터  '할인된 가격'을 계산하여 주문서 Key로 반환하는 함수
+	 * @param {number} totalDiscount - 총 할인 금액
+	 * @returns {object} { discounted_price: 할인된 가격 }
 	 */
 	#calculateDiscountedPrice(totalDiscount) {
 		const discountedPrice = this.#orderSheet.total_price - totalDiscount;
 		return { [KEY.discounted_price]: discountedPrice };
 	}
 
+	/**
+	 * '총 혜택 금액'으로부터 '이벤트 뱃지'를 계산하여 주문서 Key로 반환하는 함수
+	 * @param {number} totalBenefits - 총 혜택 금액
+	 * @returns {object} { event_badge: 이벤트 뱃지 }
+	 */
 	#calculateEventBadge(totalBenefits) {
 		const eventBadge = getEventBadge(totalBenefits);
 		return { [KEY.event_badge]: eventBadge };
 	}
 
 	/**
-	 * 주문서를 ReadOnly로 반환한다.
+	 * 주문서를 읽기 전용으로 반환하는 함수
 	 * @returns {ORDER_SHEET} 주문서(OrderSheet) 객체
 	 */
 	getOrderSheetReadOnly() {
