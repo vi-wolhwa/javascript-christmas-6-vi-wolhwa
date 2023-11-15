@@ -1,4 +1,3 @@
-// MenuManager.js
 import MENU_DATA from '../data/MenuData';
 
 const MenuManager = {
