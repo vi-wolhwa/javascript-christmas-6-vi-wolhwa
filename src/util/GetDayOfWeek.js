@@ -1,4 +1,4 @@
-import { DATE_OPTIONS } from '../constant/Options';
+import { DATE_OPTIONS } from '../constant/Options.js';
 
 /**
  * 주어진 날짜 정보로부터 요일을 반환하는 함수

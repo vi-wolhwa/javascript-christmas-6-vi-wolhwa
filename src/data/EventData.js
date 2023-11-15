@@ -11,7 +11,7 @@
  * 코드만 보고 이벤트가 어떤 내용인지 알기 어렵기 때문에 추가하였다.
  */
 
-import { MENU_OPTIONS, EVENT_OPTIONS } from '../Options.js';
+import { MENU_OPTIONS, EVENT_OPTIONS } from '../constant/Options.js';
 import MENU_DATA from '../data/MenuData.js';
 
 const commonCondition = (orderSheet) => orderSheet.total_price >= 10000;

@@ -1,4 +1,4 @@
-import { MENU_OPTIONS } from '../Options.js';
+import { MENU_OPTIONS } from '../constant/Options.js';
 
 const freeze = Object.freeze;
 const category = MENU_OPTIONS.category;

@@ -1,4 +1,4 @@
-import MENU_DATA from '../../constant/data/MenuData.js';
+import MENU_DATA from '../../data/MenuData.js';
 import { MENU_OPTIONS, ORDER_OPTIONS } from '../../constant/Options.js';
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
 
