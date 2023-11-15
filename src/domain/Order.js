@@ -4,9 +4,7 @@ import MENU_DATA from '../constant/data/MenuData.js';
 import DeepCopy from './../util/DeepCopy.js';
 import GetDayOfWeek from './../util/GetDayOfWeek.js';
 import DeepFreeze from './../util/DeepFreeze.js';
-import { BENEFIT } from '../constant/template/Templates.js';
 import getEventBadge from '../constant/EventBadges.js';
-import PrintObject from '../util/PrintObject.js';
 
 const DATE = OPTIONS.date;
 const CATEGORY = OPTIONS.menu.category;
@@ -35,6 +33,7 @@ class Order {
 		this.#orderSheet = Object.assign(this.#orderSheet, updatedItems);
 		this.#autoUpdateOrderSheet(updatedItems);
 	}
+
 	/**
 	 * 업데이트된 주문서에서 추가로 계산 가능한 항목을 자동으로 업데이트 하는 함수
 	 * @param {object} updatedItems - 주문서 변경사항
@@ -43,7 +42,7 @@ class Order {
 		const newUpdatedItems = {};
 
 		Object.keys(updatedItems).forEach((key) => {
-			const autoUpdateFunc = this.#autoUpdateByKey[key]?.(this.readOrderSheet(KEY[key]));
+			const autoUpdateFunc = this.#autoUpdateByKey[key]?.(this.#orderSheet[key]);
 
 			if (autoUpdateFunc) {
 				Object.assign(newUpdatedItems, autoUpdateFunc);
@@ -53,15 +52,6 @@ class Order {
 		if (Object.keys(newUpdatedItems).length > 0) {
 			this.updateOrderSheet(newUpdatedItems);
 		}
-	}
-
-	/**
-	 * 주문서(OrderSheet)의 데이터를 읽어온다.
-	 * @param {string} key - OrderSheet의 Key
-	 * @returns 읽어온 데이터
-	 */
-	readOrderSheet(key) {
-		return this.#orderSheet[key];
 	}
 
 	/**
@@ -113,7 +103,7 @@ class Order {
 	 * 총 혜택 금액을 계산하고, 주문서에 작성한다.
 	 */
 	#calculateTotalBenefits(totalDiscount) {
-		const events = this.readOrderSheet(KEY.available_events);
+		const events = this.#orderSheet.available_events;
 		const totalBenefits = events.reduce((total, event) => {
 			const total_giveaway = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
 			return total + total_giveaway;
@@ -125,7 +115,7 @@ class Order {
 	 * 최종 결제 금액을 계산하고, 주문서에 작성한다.
 	 */
 	#calculateDiscountedPrice(totalDiscount) {
-		const discountedPrice = this.readOrderSheet(KEY.total_price) - totalDiscount;
+		const discountedPrice = this.#orderSheet.total_price - totalDiscount;
 		return { [KEY.discounted_price]: discountedPrice };
 	}
 
@@ -138,7 +128,7 @@ class Order {
 	 * 주문서를 ReadOnly로 반환한다.
 	 * @returns {ORDER_SHEET} 주문서(OrderSheet) 객체
 	 */
-	getOrderSheet() {
+	getOrderSheetReadOnly() {
 		return DeepFreeze(DeepCopy(this.#orderSheet));
 	}
 }

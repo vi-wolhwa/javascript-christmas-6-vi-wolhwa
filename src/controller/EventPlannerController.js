@@ -3,7 +3,7 @@ import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import SIGNS from '../constant/string/Signs.js';
-import { ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
+import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
 import { MENU } from '../constant/template/Templates.js';
 import Events from './../domain/Events.js';
 import ExceptionHandler from './../error/ExceptionHandler.js';
@@ -20,8 +20,7 @@ class EventPlannerController {
 		const { visitDay, menuOrders } = await this.#handleUserInput();
 		this.#updateOrderSheet({ [KEY.visitDay]: visitDay, [KEY.menuOrders]: menuOrders });
 		this.#lookupEventBenefits();
-		this.#displayResultHeader();
-		this.#displayResultInOrder();
+		this.#displayLookupResult();
 	}
 
 	#updateOrderSheet(updatedItems) {
@@ -100,64 +99,74 @@ class EventPlannerController {
 	 * @param {object} menuOrders
 	 */
 	#lookupEventBenefits() {
-		const orderSheet = this.#order.getOrderSheet();
+		const orderSheet = this.#order.getOrderSheetReadOnly();
 		const benefits = this.#events.lookupAvailableBenefits(orderSheet);
 		this.#order.updateOrderSheet({ [KEY.available_events]: benefits });
 	}
 
-	#displayResultHeader() {
-		const visitDay = this.#order.readOrderSheet(KEY.visitDay);
-		OutputView.printResultHeader(visitDay);
+	/**
+	 * 이벤트 조회 결과를 출력하는 함수
+	 */
+	#displayLookupResult() {
+		const orderSheet = this.#order.getOrderSheetReadOnly();
+		this.#displayResultHeader(orderSheet);
+		this.#displayResultInOrder(orderSheet);
 	}
 
-	#displayResultInOrder() {
-		this.#displayOrderMenus();
-		this.#displayTotalPrice();
-		this.#displayGiveaways();
-		this.#displayBenefitDetails();
-		this.#displayTotalBenefitAmount();
-		this.#displayDiscountedPrice();
-		this.#displayEventBadge();
+	/**
+	 * 이벤트 조회 결과의 머리말을 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
+	#displayResultHeader(orderSheet) {
+		OutputView.printResultHeader(orderSheet.visitDay);
 	}
 
-	#displayOrderMenus() {
-		const orderMenus = this.#order.readOrderSheet(KEY.menuOrders);
-		OutputView.printOrderMenus(orderMenus);
+	/**
+	 * 이벤트 조회 결과를 순서대로 출력하는 함수
+	 * @param {ORDER_SHEET} orderSheet
+	 */
+	#displayResultInOrder(orderSheet) {
+		this.#displayOrderMenus(orderSheet);
+		this.#displayTotalPrice(orderSheet);
+		this.#displayGiveaways(orderSheet);
+		this.#displayBenefitDetails(orderSheet);
+		this.#displayTotalBenefitAmount(orderSheet);
+		this.#displayDiscountedPrice(orderSheet);
+		this.#displayEventBadge(orderSheet);
 	}
 
-	#displayTotalPrice() {
-		const totalPrice = this.#order.readOrderSheet(KEY.total_price);
-		OutputView.printTotalPrice(totalPrice);
+	#displayOrderMenus(orderSheet) {
+		OutputView.printOrderMenus(orderSheet.menuOrders);
 	}
 
-	#displayGiveaways() {
-		const giveaways = this.#order.readOrderSheet(KEY.available_events).reduce((giveaways, event) => {
-			return giveaways.concat(event.giveaways);
-		}, []);
+	#displayTotalPrice(orderSheet) {
+		OutputView.printTotalPrice(orderSheet.total_price);
+	}
+
+	#displayGiveaways(orderSheet) {
+		const giveaways = orderSheet.available_events.flatMap((event) => event.giveaways);
 		OutputView.printGiveaways(giveaways);
 	}
 
-	#displayBenefitDetails() {
-		const benefitDetails = this.#order.readOrderSheet(KEY.available_events).map((event) => {
-			const amount = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, event.discount);
+	#displayBenefitDetails(orderSheet) {
+		const benefitDetails = orderSheet.available_events.map((event) => {
+			const giveawayTotal = event.giveaways.reduce((total, giveaway) => total + giveaway.menu.price, 0);
+			const amount = giveawayTotal + event.discount;
 			return { name: event.name, amount: amount };
 		});
 		OutputView.printBenefitDetails(benefitDetails);
 	}
 
-	#displayTotalBenefitAmount() {
-		const totalBenefitAmount = this.#order.readOrderSheet(KEY.total_benefits);
-		OutputView.printTotalBenefitsAmount(totalBenefitAmount);
+	#displayTotalBenefitAmount(orderSheet) {
+		OutputView.printTotalBenefitsAmount(orderSheet.total_benefits);
 	}
 
-	#displayDiscountedPrice() {
-		const discountedPrice = this.#order.readOrderSheet(KEY.discounted_price);
-		OutputView.printDiscountedPrice(discountedPrice);
+	#displayDiscountedPrice(orderSheet) {
+		OutputView.printDiscountedPrice(orderSheet.discounted_price);
 	}
 
-	#displayEventBadge() {
-		const eventBadge = this.#order.readOrderSheet(KEY.event_badge);
-		OutputView.printEventBadge(eventBadge);
+	#displayEventBadge(orderSheet) {
+		OutputView.printEventBadge(orderSheet.event_badge);
 	}
 }
 
