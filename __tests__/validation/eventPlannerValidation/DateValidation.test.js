@@ -2,25 +2,32 @@ import VisitDayValidation from '../../../src/validation/eventPlannerValidation/V
 import { DATE_OPTIONS } from '../../../src/constant/Options.js';
 
 describe('VisitDayValidation 모듈 테스트', () => {
-	const firstDate = DATE_OPTIONS.first_date;
-	const lastDate = DATE_OPTIONS.last_date;
-	const errorPrefix = '[ERROR]';
+	describe('checkInRange 함수 테스트', () => {
+		const firstDate = DATE_OPTIONS.first_date;
+		const lastDate = DATE_OPTIONS.last_date;
 
-	test.each([['abc'], ['12a'], ['1 2']])('정수가 아닌 값에 대한 예외 발생 테스트', (date) => {
-		expect(() => {
-			VisitDayValidation.validate(date);
-		}).toThrow(errorPrefix);
+		test.each([
+			[firstDate - 1, firstDate, lastDate],
+			[lastDate + 1, firstDate, lastDate]
+		])('가능한 범위 밖의 날짜를 입력한 경우 에러 발생', (day, top, bottom) => {
+			expect(() => VisitDayValidation.checkInRange(day, top, bottom)).toThrow();
+		});
+
+		test.each([
+			[firstDate, firstDate, lastDate],
+			[lastDate, firstDate, lastDate]
+		])('가능한 범위 내의 날짜를 입력한 경우 정상 처리', (day, top, bottom) => {
+			expect(() => VisitDayValidation.checkInRange(day, top, bottom)).not.toThrow();
+		});
 	});
 
-	test.each([[firstDate - 1], [lastDate + 1]])('범위 외의 날짜에 대한 예외 발생 테스트', (date) => {
-		expect(() => {
-			VisitDayValidation.validate(date);
-		}).toThrow(errorPrefix);
-	});
+	describe('checkIsInteger 함수 테스트', () => {
+		test.each([[1.1], ['a']])('날짜가 정수가 아닌 경우 에러 발생', (day) => {
+			expect(() => VisitDayValidation.checkIsInteger(day)).toThrow();
+		});
 
-	test.each([[firstDate], [lastDate]])('범위 내의 날짜에 대한 정상 처리 테스트', (date) => {
-		expect(() => {
-			VisitDayValidation.validate(date);
-		}).not.toThrow();
+		test.each([[1]])('날짜가 정수인 경우 정상 처리', (day) => {
+			expect(() => VisitDayValidation.checkIsInteger(day)).not.toThrow();
+		});
 	});
 });
