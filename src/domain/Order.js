@@ -3,7 +3,7 @@ import { MENU_OPTIONS, DATE_OPTIONS } from '../constant/Options.js';
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheet.js';
 import DeepCopy from '../util/DeepCopy.js';
 import GetDayOfWeek from '../util/GetDayOfWeek.js';
-import getEventBadge from '../constant/EventBadges.js';
+import getEventBadge from '../constant/data/EventBadge.js';
 
 class Order {
 	/** @type {ORDER_SHEET} */

@@ -1,12 +1,16 @@
 const freeze = Object.freeze;
 
+const ORDER_OPTIONS = freeze({
+	order_count_max: 20
+});
+
 const MENU_OPTIONS = freeze({
-	category: {
+	category: freeze({
 		appetizer: '애피타이저',
 		main: '메인',
 		dessert: '디저트',
 		beverage: '음료'
-	}
+	})
 });
 
 const DATE_OPTIONS = freeze({
@@ -32,4 +36,4 @@ const EVENT_OPTIONS = freeze({
 	weekend: Object.values(DATE_OPTIONS.days_of_week).splice(5, 7)
 });
 
-export { MENU_OPTIONS, DATE_OPTIONS, EVENT_OPTIONS };
+export { ORDER_OPTIONS, MENU_OPTIONS, DATE_OPTIONS, EVENT_OPTIONS };
