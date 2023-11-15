@@ -1,5 +1,5 @@
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
-import MenuManager from '../../domain/MenuFinder.js';
+import MenuManager from '../../domain/MenuManager.js';
 
 const MenuNameValidation = {
 	/**

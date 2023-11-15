@@ -6,7 +6,7 @@ import ExceptionHandler from '../error/ExceptionHandler.js';
 import EventPlannerValidator from '../validation/EventPlannerValidator.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
-import MenuManager from './../domain/MenuFinder';
+import MenuManager from '../domain/MenuManager.js';
 
 const Validator = EventPlannerValidator;
 

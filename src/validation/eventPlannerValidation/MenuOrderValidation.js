@@ -1,6 +1,6 @@
 import { MENU_OPTIONS, ORDER_OPTIONS } from '../../constant/Options.js';
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
-import MenuManager from './../../domain/MenuFinder';
+import MenuManager from '../../domain/MenuManager.js';
 
 const MenuOrderValidation = {
 	/**
