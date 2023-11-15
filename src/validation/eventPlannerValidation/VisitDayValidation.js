@@ -6,27 +6,23 @@
  */
 
 import ERROR_MESSAGES from '../../constant/string/ErrorMessages.js';
-import OPTIONS from '../../constant/Options.js';
-import DeepFreeze from '../../util/DeepFreeze.js';
+import { DATE_OPTIONS } from '../../constant/Options.js';
 
-const DATE = OPTIONS.date;
-const ERROR = ERROR_MESSAGES;
-
-const VisitDayValidation = DeepFreeze({
+const VisitDayValidation = Object.freeze({
 	validate(date) {
 		this.checkIsInteger(date);
-		this.checkInRange(date, DATE.first_date, DATE.last_date);
+		this.checkInRange(date, DATE_OPTIONS.first_date, DATE_OPTIONS.last_date);
 	},
 
 	checkIsInteger(date) {
 		if (!Number.isInteger(Number(date))) {
-			throw new Error(ERROR.invalid_date);
+			throw new Error(ERROR_MESSAGES.invalid_date);
 		}
 	},
 
 	checkInRange(date, bottom, top) {
 		if (!(bottom <= Number(date) && Number(date) <= top)) {
-			throw new Error(ERROR.invalid_date);
+			throw new Error(ERROR_MESSAGES.invalid_date);
 		}
 	}
 });

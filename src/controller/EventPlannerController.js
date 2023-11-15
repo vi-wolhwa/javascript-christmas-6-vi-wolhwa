@@ -1,6 +1,6 @@
 import SIGNS from '../constant/string/Signs.js';
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
-import { MENU } from '../constant/template/Templates.js';
+import { MENU_ORDER, EVENT_BENEFIT } from '../constant/template/Templates.js';
 import Order from '../domain/Order.js';
 import Events from './../domain/Events.js';
 import ExceptionHandler from './../error/ExceptionHandler.js';
@@ -82,24 +82,26 @@ class EventPlannerController {
 	 * @returns {Array<MENU>} 주문 메뉴 리스트
 	 */
 	#preprocessMenuOrders(menuOrders) {
-		const preprocessMenu = (menu) => {
-			const [name, count] = menu.split(SIGNS.hyphen);
-			return MENU(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
+		const preprocessMenu = (menuOrder) => {
+			const [name, count] = menuOrder.split(SIGNS.hyphen);
+			return MENU_ORDER(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
+			return MENU_ORDER(name.replace(SIGNS.space, SIGNS.empty), parseInt(count, 10));
 		};
 
 		const newMenuOrders = menuOrders
 			.split(SIGNS.comma)
-			.map((menu) => menu.trim())
-			.filter((menu) => menu !== SIGNS.empty)
+			.map((menuOrder) => menuOrder.trim())
+			.filter((menuOrder) => menuOrder !== SIGNS.empty)
 			.map(preprocessMenu);
 
 		Validator.validateMenuOrders(newMenuOrders);
+
 		return newMenuOrders;
 	}
 
 	/**
 	 * 참여 가능한 이벤트들의 혜택을 조회하는 함수
-	 * @returns {Array<object>} 참여 가능한 이벤트 혜택 리스트
+	 * @returns {Array<EVENT_BENEFIT>} 참여 가능한 이벤트 혜택 리스트
 	 */
 	#lookupAvailableEvents() {
 		const orderSheet = this.#order.getOrderSheetReadOnly();

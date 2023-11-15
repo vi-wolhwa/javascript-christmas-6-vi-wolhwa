@@ -1,13 +1,10 @@
 import { ORDER_SHEET, ORDER_SHEET_KEYS as KEY } from '../constant/template/OrderSheetTemplate.js';
-import OPTIONS from '../constant/Options.js';
+import { MENU_OPTIONS, DATE_OPTIONS } from '../constant/Options.js';
 import MENU_DATA from '../constant/data/MenuData.js';
 import DeepCopy from './../util/DeepCopy.js';
 import GetDayOfWeek from './../util/GetDayOfWeek.js';
 import DeepFreeze from './../util/DeepFreeze.js';
 import getEventBadge from '../constant/EventBadges.js';
-
-const DATE = OPTIONS.date;
-const CATEGORY = OPTIONS.menu.category;
 
 class Order {
 	/** @type {ORDER_SHEET} */
@@ -58,7 +55,7 @@ class Order {
 	 * 방문 날짜에 해당하는 요일을 계산하고, 주문서에 작성한다.
 	 */
 	#calculateDayOfWeek(visitDay) {
-		const dayOfWeek = GetDayOfWeek(DATE.year, DATE.month, visitDay);
+		const dayOfWeek = GetDayOfWeek(DATE_OPTIONS.year, DATE_OPTIONS.month, visitDay);
 		return { [KEY.day_of_week]: dayOfWeek };
 	}
 
@@ -77,10 +74,10 @@ class Order {
 	 */
 	#calculateOrderCount(menuOrders) {
 		const orderCount = {
-			[CATEGORY.appetizer]: 0,
-			[CATEGORY.main]: 0,
-			[CATEGORY.dessert]: 0,
-			[CATEGORY.beverage]: 0
+			[MENU_OPTIONS.category.appetizer]: 0,
+			[MENU_OPTIONS.category.main]: 0,
+			[MENU_OPTIONS.category.dessert]: 0,
+			[MENU_OPTIONS.category.beverage]: 0
 		};
 		menuOrders.reduce((orderCount, { name, count }) => {
 			orderCount[MENU_DATA[name].category] += count;
