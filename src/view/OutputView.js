@@ -63,7 +63,8 @@ const OutputView = {
 		Console.print(MESSAGES.TITLE.giveaway);
 
 		if (giveaways.length === 0) {
-			Console.print('없음');
+			Console.print(MESSAGES.CONTENT.nothing);
+			return;
 		}
 
 		giveaways.forEach((giveaway) => {
@@ -80,7 +81,8 @@ const OutputView = {
 		Console.print(MESSAGES.TITLE.available_events);
 
 		if (availableEvents.length === 0) {
-			Console.print('없음');
+			Console.print(MESSAGES.CONTENT.nothing);
+			return;
 		}
 
 		availableEvents.forEach((event) => {
